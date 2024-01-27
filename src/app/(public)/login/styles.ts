@@ -1,5 +1,5 @@
 "use client"
-import imagebg from "@/assets/delaware-bg.png";
+import imagebg from "@/assets/imgs/delaware-bg.png";
 import { styled } from "styled-components";
 
 export const Container = styled.div`
@@ -8,8 +8,6 @@ export const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 100vh;
-  background-image: url(${imagebg.src});
-  background-size: cover;
 
   .logo{
     position: absolute;
