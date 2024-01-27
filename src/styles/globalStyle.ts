@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body, input, text-area, button{
-    font-family: 'DM Sans', sans-serif;
+    font-family: "Montserrat";
   }
 
   button{
