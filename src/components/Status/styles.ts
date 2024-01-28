@@ -7,7 +7,8 @@ interface StatusContainerProps {
 }
 
 export const StatusContainer = styled.span<StatusContainerProps>`
-position: relative;
+  display: inline-block;
+  position: relative;
   width: 25px;
   height: 25px;
   border-radius: 50%;

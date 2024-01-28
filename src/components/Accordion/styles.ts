@@ -6,6 +6,7 @@ export const AccordionContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 1.19rem;
+  width: 100%;
 
   .accordion-list {
     list-style: none;
@@ -16,43 +17,88 @@ export const AccordionContainer = styled.div`
     li {
       position: relative;
       margin-bottom: 0.3rem;
+      padding: 10px 0px;
+      font-size: 14px;
 
       &:last-child {
         margin-bottom: 0rem;
       }
 
       &.isActive {
-        .acordionContent {
+        .acordion-content {
           max-height: 1000px;
-          padding: 0.88rem 2.25rem;
           transition: max-height 0.3s linear;
         }
       }
 
-      .accordionHeader {
+      .accordion-header {
         display: flex;
         align-items: center;
-        gap: 10px;
+        justify-content: space-between;
         padding-bottom: 5px;
         border-bottom: 2px solid #393939;
         cursor: pointer;
 
+        .accordion-header-title{
+          display: flex;
+          align-items: center;
+          gap: 10px;
 
-        & > h3 {
-          font-size: 16px;
-          color: #393939;
-          font-weight: 700;
+          & > h3 {
+            font-size: 16px;
+            color: #393939;
+            font-weight: 700;
+          }
         }
       }
 
-      .acordionContent {
+      .acordion-content {
         max-height: 0px;
         overflow: hidden;
+        cursor: pointer;
 
         .accordion-items{
           list-style: none;
           padding: 0;
           margin: 0;
+
+          & > li{
+            border-bottom: 2px solid #f2f2f2;
+            max-height: 45px;
+            overflow: hidden;
+
+            &.isActive {
+              max-height: 1000px;
+              transition: max-height 0.3s linear;
+            }
+
+            .accordion-item-header{
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding-left: 57px;
+            }
+
+            .accordion-item-doc{
+              background: #F2F2F2;
+              margin-top: 10px;
+              padding-left: 57px;
+              padding-top: 10px;
+              padding-bottom: 10px;
+
+              & > p{
+                margin-bottom: 5px;
+              }
+
+              & > a {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                color: black;
+                text-decoration: underline;
+              }
+            }
+          }
         }
       }
     }
