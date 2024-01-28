@@ -1,5 +1,4 @@
 "use client"
-import imagebg from "@/assets/imgs/delaware-bg.png";
 import { styled } from "styled-components";
 
 export const Container = styled.div`
@@ -7,7 +6,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 40px);
 
   .logo{
     position: absolute;

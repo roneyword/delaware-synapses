@@ -1,6 +1,7 @@
 "use client"
 
 import StyledComponentsRegistry from "@/libs/registry"
+import { Container } from "@/styles/container"
 import GlobalStyle from "@/styles/globalStyle"
 
 export default function RootLayout({
@@ -13,7 +14,9 @@ export default function RootLayout({
       <body>
         <StyledComponentsRegistry>
           <GlobalStyle />
-          {children}
+          <Container $isBackgroundImg={true}>
+            {children}
+          </ Container>
         </StyledComponentsRegistry>
       </body>
     </html>

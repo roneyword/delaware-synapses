@@ -1,4 +1,3 @@
-import BackgroundImg from "@/components/BackgroundImg"
 import Card from "@/components/Card"
 import Header from "@/components/Header"
 import Wrapper from "@/components/Wrapper"
@@ -6,6 +5,7 @@ import Wrapper from "@/components/Wrapper"
 import iconPast from "@/assets/icons/cc-project.svg"
 import CardProgress from "@/components/CardProgress"
 import { PhaseContainer } from "./styles"
+import ProgressBar from "@/components/ProgressBar"
 
 interface ControlCenterProps {
   params: { projectUuid: string }
@@ -48,7 +48,7 @@ const itens = [
 export default function ControlCenter({ params }: ControlCenterProps) {
 
   return (
-    <BackgroundImg>
+    <>
       <Header title="Control Center" text="Lunar Dynamics - Pré-projeto Browfield" />
       <Wrapper>
         <Card link={"home"} title="Projects" text="From clients list" icon={iconPast} />
@@ -60,7 +60,15 @@ export default function ControlCenter({ params }: ControlCenterProps) {
           ))}
         </PhaseContainer>
       </Wrapper>
-    </BackgroundImg>
+
+      <Wrapper>
+        <h2>EPICS</h2>
+
+        <PhaseContainer>
+          <ProgressBar />
+        </PhaseContainer>
+      </Wrapper>
+    </>
   )
 
 }

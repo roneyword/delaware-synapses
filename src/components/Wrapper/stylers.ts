@@ -1,7 +1,7 @@
 "use client"
 import { styled } from "styled-components";
 
-export const WrapperContainer = styled.header`
+export const WrapperContainer = styled.div`
   max-height: calc(100% - 85px);
   overflow-y: auto;
   border: 2px solid #7f7f7f;

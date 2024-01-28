@@ -1,4 +1,3 @@
-import BackgroundImg from "@/components/BackgroundImg";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Wrapper from "@/components/Wrapper";
@@ -27,13 +26,13 @@ const itens = [
 
 export default function Home() {
   return (
-    <BackgroundImg>
+    <>
       <Header />
       <Wrapper>
         {itens.map(project => (
           <Card link={`control-center/${project.projectUuid}`} title={project.name} />
         ))}
       </Wrapper>
-    </BackgroundImg>
+    </>
   );
 }
