@@ -11,9 +11,20 @@ justify-content: space-between;
  border-radius: 0.375rem;
  border: 2px solid #bfbfbf;
 
- .card-title{
-  color: #727272;
-  font-weight: 600;
-  font-size: 20px;
+ .card-content{
+  
+  .card-title{
+    color: #727272;
+    font-weight: 600;
+    font-size: 20px;
+  }
+
+  .card-text{
+    margin-top: 5px;
+    color: #b1aeae;
+    font-size: 14px;
+  } 
  }
+
+ 
 `;
