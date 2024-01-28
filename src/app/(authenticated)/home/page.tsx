@@ -1,6 +1,7 @@
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Wrapper from "@/components/Wrapper";
+import Link from "next/link";
 
 const itens = [
   {

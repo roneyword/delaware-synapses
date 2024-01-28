@@ -1,12 +1,14 @@
+import Image from "next/image";
 import { CardProgressContainer } from "./styles";
 
 interface CardProgressProps {
   percentComplete: number,
-  title: string,
+  title?: string,
+  name: string,
   totalWork: number
   completeWork: number
+  icon?: any,
 }
-
 
 const iconColor = (color: string) =>
   <svg
@@ -56,16 +58,18 @@ const onGetColor = (phase: string) => {
 export default function CardProgress({
   percentComplete,
   title,
+  name,
   totalWork,
-  completeWork }: CardProgressProps) {
+  completeWork,
+  icon }: CardProgressProps) {
 
   return (
-    <CardProgressContainer $percentComplete={percentComplete} $color={onGetColor(title).bg}>
-      <h2 className="card-progress-title">{title}</h2>
+    <CardProgressContainer $percentComplete={percentComplete} $bgColor={onGetColor(name).bg} $color={onGetColor(name).color}>
+      {title && <h2 className="card-progress-title">{title}</h2>}
 
       <div className="card-progress">
         <figure className="card-progress-icon">
-          {iconColor(onGetColor(title).color)}
+          {icon ? <Image src={icon} alt="icone" width={68} height={68} /> : iconColor(onGetColor(name).color)}
         </figure>
 
         <div className="card-progress-wrapper">

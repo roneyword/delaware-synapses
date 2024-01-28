@@ -11,38 +11,73 @@ interface ControlCenterProps {
   params: { projectUuid: string }
 }
 
-const itens = [
+const phases = [
   {
     percentComplete: 100,
     title: "Prepare",
+    name: "Prepare",
     totalWork: 48,
     completeWork: 48
   },
   {
     percentComplete: 22,
     title: "Explore",
+    name: "Explore",
     totalWork: 122,
     completeWork: 27
   },
   {
     percentComplete: 22,
-    title: "realize",
+    title: "Realize",
+    name: "Realize",
     totalWork: 122,
     completeWork: 27
   },
   {
     percentComplete: 22,
-    title: "deploy",
+    title: "Deploy",
+    name: "Deploy",
     totalWork: 122,
     completeWork: 27
   },
   {
     percentComplete: 22,
     title: "run",
+    name: "run",
     totalWork: 122,
     completeWork: 27
   }
 
+]
+
+const epics = [
+  {
+    step: 10,
+    name: "Prepare",
+    phases: "Prepare",
+    plannedDate: "29/12/2023",
+    completeWork: 48,
+    totalWork: 48,
+    percentComplete: 100
+  },
+  {
+    step: 5,
+    name: "Explore - ECC SBX",
+    phases: "Explore",
+    plannedDate: "29/12/2023",
+    completeWork: 20,
+    totalWork: 48,
+    percentComplete: 15
+  },
+  {
+    step: 5,
+    name: "Realize - DEV",
+    phases: "Realize",
+    plannedDate: "29/12/2023",
+    completeWork: 20,
+    totalWork: 48,
+    percentComplete: 15
+  }
 ]
 
 export default function ControlCenter({ params }: ControlCenterProps) {
@@ -51,21 +86,21 @@ export default function ControlCenter({ params }: ControlCenterProps) {
     <>
       <Header title="Control Center" text="Lunar Dynamics - Pré-projeto Browfield" />
       <Wrapper>
-        <Card link={"home"} title="Projects" text="From clients list" icon={iconPast} />
+        <Card link={"/home"} title="Projects" text="From clients list" icon={iconPast} />
       </Wrapper>
-      <Wrapper>
+      <Wrapper title="PHASES">
         <PhaseContainer>
-          {itens.map(item => (
-            <CardProgress completeWork={item.completeWork} percentComplete={item.percentComplete} title={item.title} totalWork={item.totalWork} />
+          {phases.map(item => (
+            <CardProgress completeWork={item.completeWork} percentComplete={item.percentComplete} title={item.title} name={item.name} totalWork={item.totalWork} />
           ))}
         </PhaseContainer>
       </Wrapper>
 
-      <Wrapper>
-        <h2>EPICS</h2>
-
+      <Wrapper title="EPICS">
         <PhaseContainer>
-          <ProgressBar />
+          {epics.map(item => (
+            <ProgressBar step={item.step} name={item.name} phase={item.phases} plannedDate={item.plannedDate} completeWork={item.completeWork} totalWork={item.totalWork} percentComplete={item.percentComplete} />
+          ))}
         </PhaseContainer>
       </Wrapper>
     </>

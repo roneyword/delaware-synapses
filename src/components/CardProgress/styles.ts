@@ -4,15 +4,16 @@ import { keyframes, styled } from "styled-components";
 interface CardProgressContainerProps {
   $percentComplete: number,
   $color: string,
+  $bgColor: string,
 }
 
-const fillAnimation = keyframes<CardProgressContainerProps>`
-  from {
-    width: 0%;
-  }
-  to {
-    width: ${props => props.$percentComplete}%;
-  }
+const fillAnimation = (percentComplete: number) => keyframes`
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: calc(${percentComplete}% - 4px) 
+    }
 `;
 
 export const CardProgressContainer = styled.div<CardProgressContainerProps>`
@@ -26,13 +27,14 @@ flex: 1;
   padding-left: 0.5rem;
   margin-bottom: 5px;
   text-transform: uppercase;
+  color: ${props => props.$color};
 }
 
 .card-progress{
   flex: 1;
   display: flex;
   gap: 0.75rem;
-  background-color: ${props => props.$color};
+  background-color: ${props => props.$bgColor};
   border-radius: 0.75rem;
   padding: 1rem;
 
@@ -75,11 +77,10 @@ flex: 1;
           top: 2px;
           left: 2px;
           content: "";
-          width: calc(${props => props.$percentComplete}% - 4px);
           height: calc(100% - 4px);
           background: ${props => props.$color};
           border-radius: 0.375rem;
-          animation: ${fillAnimation} .8s ease;
+          animation : ${props => fillAnimation(props.$percentComplete)} 0.8s ease both
         }
       }
     }

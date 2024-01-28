@@ -17,7 +17,6 @@ export const Container = styled.div<ContainerProps>`
     `
         background-image: url(${imagebg.src});
         background-size: cover;
-        z-index: -1;
       `}
 
 

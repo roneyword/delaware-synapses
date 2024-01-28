@@ -1,9 +1,23 @@
 "use client"
-import { styled } from "styled-components";
+import { keyframes, styled } from "styled-components";
 
-export const ProgressBarContainer = styled.div`
+interface CardProgressContainerProps {
+  $percentComplete: number,
+  $color: string,
+  $bgColor: string,
+}
+
+const fillAnimation = (percentComplete: number) => keyframes`
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: calc(${percentComplete}% - 20px) 
+    }
+`;
+
+export const ProgressBarContainer = styled.div<CardProgressContainerProps>`
  width: 100%;
- max-width: 350px;
  display: flex;
  align-items: center;
 
@@ -16,7 +30,7 @@ export const ProgressBarContainer = styled.div`
   height: 55px;
   border: 2px solid white;
   border-radius: 50%;
-  background: red;
+  background: ${props => props.$color};
   z-index: 2;
 
   & > span{
@@ -38,22 +52,21 @@ export const ProgressBarContainer = styled.div`
   width: 100%;
   height: 35px;
   margin-left: -25px;
-  margin-top: 15px;
+  margin-top: 20px;
   padding: 0 10px 0 30px;
   border-radius: 0.5rem;
   background: #a6a6a6;
-  border: 1px solid green;
 
   &::after{
     content: "";
     position: absolute;
     top: 0;
     left: 20px;
-    width: calc(100% - 20px);
     height: 100%;
     border-top-right-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
-    background: red;
+    background: ${props => props.$bgColor};
+    animation : ${props => fillAnimation(props.$percentComplete)} 0.8s ease both
   }
 
   .progress-bar-name{
@@ -64,7 +77,7 @@ export const ProgressBarContainer = styled.div`
     z-index: 10;
 
     & > span{
-      font-size: 14px;
+      font-size: 16px;
       color: white;
     }
 
@@ -79,7 +92,16 @@ export const ProgressBarContainer = styled.div`
   }
 
   .progress-bar-work{
-    align-content: flex-end;
+    display: flex;
+    justify-content: flex-end;
+    gap: 40px;
+    margin-top: 5px;
+    margin-right: 25px;
+    color: ${props => props.$color};
+
+    & > span{
+      font-size: 16px;
+    }
   }
  }
 `;

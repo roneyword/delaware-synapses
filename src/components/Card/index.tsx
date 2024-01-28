@@ -20,7 +20,6 @@ export default function Card({ title, link, text, icon }: CardProps) {
           {text && <p className="card-text">{text}</p>}
         </div>
 
-
         <figure>
           <Image src={icon ? icon : IconProject} alt="icone de projetos" />
         </figure>

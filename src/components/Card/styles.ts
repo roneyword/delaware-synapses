@@ -10,6 +10,7 @@ justify-content: space-between;
  padding: 1.25rem;
  border-radius: 0.375rem;
  border: 2px solid #bfbfbf;
+ cursor: pointer;
 
  .card-content{
   
