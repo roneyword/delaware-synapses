@@ -2,7 +2,8 @@
 import { styled } from "styled-components";
 
 export const WrapperContainer = styled.header`
-  height: calc(100% - 85px);
+  max-height: calc(100% - 85px);
+  overflow-y: auto;
   border: 2px solid #7f7f7f;
   border-radius: 0.75rem;
   padding: 18px;

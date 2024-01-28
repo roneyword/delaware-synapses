@@ -2,7 +2,7 @@
 import { styled } from "styled-components";
 
 interface HeaderAvatarProps {
-  isVisible: boolean
+  $isVisible: boolean
 }
 
 export const HeaderContainer = styled.header`
@@ -55,7 +55,7 @@ export const HeaderAvatar = styled.div<HeaderAvatarProps>`
     position: absolute;
     top: 100%;
     right: 0;
-    display: ${props => props.isVisible ? "block" : "none"};
+    display: ${props => props.$isVisible ? "block" : "none"};
     padding: 10px 1.5rem;
     box-shadow: 1px 2px 7px;
     background: white;

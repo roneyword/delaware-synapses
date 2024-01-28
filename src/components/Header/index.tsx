@@ -33,7 +33,7 @@ export default function Header({ title, text }: HeaderProps) {
         {text && <p>{text}</p>}
       </div>
 
-      <HeaderAvatar isVisible={isLogoutVisible}>
+      <HeaderAvatar $isVisible={isLogoutVisible}>
         <button onClick={handleIsActiveLogout} className="header-btn">
           <figure>
             <Image src={iconUser} alt="icone de usuario" />
