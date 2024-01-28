@@ -20,18 +20,28 @@ export const DetailsLegendContainer = styled.div`
     padding: 0;
     margin: 0;
 
-    li{
+    & > li{
       display: flex;
       align-items: center;
       gap: 10px;
       margin-bottom: 10px;
+
+
+      & > figure{
+        width: 25px;
+        height: 25px;
+
+        & > img{
+          width: 100%;
+          height: auto;
+        }
+      }
 
       &:last-child{
         margin-bottom: 0px;
       }
     }
   }
-  
 `;
 
 export const DetailsContentContainer = styled.div`
@@ -39,6 +49,7 @@ export const DetailsContentContainer = styled.div`
   gap: 20px;
  
   .card-details{
+    gap: 20px;
     width: 100%;
     padding: 1rem;
     background: white;
