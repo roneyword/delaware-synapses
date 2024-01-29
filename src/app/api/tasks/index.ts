@@ -1,8 +1,8 @@
-import { httpMethods } from "../clients/config.js";
-import { fetchAPISysnapses } from "../clients/sysnapsesService.js";
-import { HttpMethodsProps } from "../clients/types.js";
-import { fetchAPIWorflow } from "../clients/workflowService.js";
-import { TaskProps } from "./types.js";
+import { httpMethods } from "../clients/config";
+import { fetchAPISysnapses } from "../clients/sysnapsesService";
+import { HttpMethodsProps } from "../clients/types";
+import { fetchAPIWorflow } from "../clients/workflowService";
+import { TaskProps } from "./types";
 
 export const findTasksByStoryIdAndProjectId = async (storyId: number, projectUuid: string): Promise<TaskProps[] | [] | undefined> => {
   try {

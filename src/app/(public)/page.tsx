@@ -10,8 +10,6 @@ export default function App() {
 
   const handleGenerateToken = async () => {
     if (searchParams.has("code")) {
-      if (!window || !window?.location) return;
-
       const code = searchParams.get("code");
       await onGenerateAccesTokenByCode(code!);
 

@@ -1,7 +1,7 @@
-import { httpMethods } from "../clients/config.js";
-import { fetchAPISysnapses } from "../clients/sysnapsesService.js";
-import { HttpMethodsProps } from "../clients/types.js";
-import { UserStoriesProps } from "./types.js";
+import { httpMethods } from "../clients/config";
+import { fetchAPISysnapses } from "../clients/sysnapsesService";
+import { HttpMethodsProps } from "../clients/types";
+import { UserStoriesProps } from "./types";
 
 export const fetchUserStoriesData = async (featureId: number, projectUuid: string): Promise<UserStoriesProps[] | [] | undefined> => {
   try {
