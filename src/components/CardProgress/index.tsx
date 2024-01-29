@@ -4,6 +4,7 @@ import { CardProgressContainer } from "./styles";
 interface CardProgressProps {
   percentComplete: number,
   title?: string,
+  workTitle?: string,
   name: string,
   totalWork: number
   completeWork: number
@@ -58,6 +59,7 @@ const onGetColor = (phase: string) => {
 export default function CardProgress({
   percentComplete,
   title,
+  workTitle,
   name,
   totalWork,
   completeWork,
@@ -69,14 +71,18 @@ export default function CardProgress({
 
       <div className="card-progress">
         <figure className="card-progress-icon">
-          {icon ? <Image src={icon} alt="icone" width={68} height={68} /> : iconColor(onGetColor(name).color)}
+          {icon ? icon : iconColor(onGetColor(name).color)}
         </figure>
 
         <div className="card-progress-wrapper">
           <span className="card-progress-percent-complete">{percentComplete}%</span>
 
           <div className="card-progress-content">
-            <span>{completeWork} of {totalWork}</span>
+            <div className="card-progress-work">
+              <span>{workTitle}</span>
+              <span>{completeWork} of {totalWork}</span>
+            </div>
+
             <div className="card-progress-bar"></div>
           </div>
         </div>

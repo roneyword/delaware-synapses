@@ -10,10 +10,11 @@ interface ProgressBarProps {
   plannedDate: string,
   completeWork: number,
   totalWork: number,
-  percentComplete: number
+  percentComplete: number,
+  title?: string,
 }
 
-export default function ProgressBar({ step, name, phase, plannedDate, totalWork, completeWork, percentComplete, }: ProgressBarProps) {
+export default function ProgressBar({ step, name, phase, plannedDate, totalWork, completeWork, percentComplete, title }: ProgressBarProps) {
 
 
   const onGetColor = (phase: string) => {
@@ -31,28 +32,34 @@ export default function ProgressBar({ step, name, phase, plannedDate, totalWork,
 
   return (
     <ProgressBarContainer $percentComplete={percentComplete} $bgColor={onGetColor(phase).bg} $color={onGetColor(phase).color}>
-      <div className="progress-bar-step">
-        <span>{step}</span>
-      </div>
 
-      <div className="progress-bar-content">
-        <div className="progress-bar">
-          <div className="progress-bar-name">
-            <figure>
-              <Image src={iconCrow} alt="icone de uma coroa" />
-            </figure>
-            <span>{name}</span>
+      {title && <h2 className="progress-bar-title">{title}</h2>}
+
+      <div className="progress-bar-wrapper">
+        <div className="progress-bar-step">
+          <span>{step}</span>
+        </div>
+
+        <div className="progress-bar-content">
+          <div className="progress-bar">
+            <div className="progress-bar-name">
+              <figure>
+                <Image src={iconCrow} alt="icone de uma coroa" />
+              </figure>
+              <span>{name}</span>
+            </div>
+
+            <time>{plannedDate}</time>
+
           </div>
 
-          <time>{plannedDate}</time>
-
-        </div>
-
-        <div className="progress-bar-work">
-          <span>{completeWork} of {totalWork}</span>
-          <span>{percentComplete}%</span>
+          <div className="progress-bar-work">
+            <span>{completeWork} of {totalWork}</span>
+            <span>{percentComplete}%</span>
+          </div>
         </div>
       </div>
+
     </ProgressBarContainer>
   )
 }
