@@ -25,9 +25,9 @@ export default function Header({ title, text }: HeaderProps) {
   }
 
   const handleLogout = async () => {
-    if (!window) return;
+    if (!window || !window?.location) return;
 
-    const microsoftLoginUrl = await onMicrosoftLogout(window.location.origin);
+    const microsoftLoginUrl = await onMicrosoftLogout();
     router.push(microsoftLoginUrl);
   }
 
