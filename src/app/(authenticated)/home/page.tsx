@@ -1,7 +1,7 @@
+import { getProjects } from "@/app/api/projects";
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Wrapper from "@/components/Wrapper";
-import Link from "next/link";
 
 const itens = [
   {
@@ -25,7 +25,11 @@ const itens = [
 
 ]
 
-export default function Home() {
+export default async function Home() {
+  const responseProjects = await getProjects();
+  console.log(responseProjects)
+
+
   return (
     <>
       <Header />
