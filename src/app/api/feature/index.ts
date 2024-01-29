@@ -1,7 +1,7 @@
-import { httpMethods } from "../clients/config.js";
-import { fetchAPISysnapses } from "../clients/sysnapsesService.js";
-import { HttpMethodsProps } from "../clients/types.js";
-import { FeatureProps } from "./types.js";
+import { httpMethods } from "../clients/config";
+import { fetchAPISysnapses } from "../clients/sysnapsesService";
+import { HttpMethodsProps } from "../clients/types";
+import { FeatureProps } from "./types";
 
 export const findFeaturesByFaseIdAndProjectId = async (epicId: number, projectUuid: string): Promise<FeatureProps[] | [] | undefined> => {
   try {

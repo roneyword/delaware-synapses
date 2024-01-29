@@ -1,7 +1,7 @@
-import { httpMethods } from "../clients/config.js";
-import { fetchAPISysnapses } from "../clients/sysnapsesService.js";
-import { HttpMethodsProps } from "../clients/types.js";
-import { ClientProps } from "./types.js";
+import { httpMethods } from "../clients/config";
+import { fetchAPISysnapses } from "../clients/sysnapsesService";
+import { HttpMethodsProps } from "../clients/types";
+import { ClientProps } from "./types";
 
 export const getProjects = async (): Promise<ClientProps | [] | undefined> => {
   try {
