@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { HeaderAvatar, HeaderContainer } from "./styles";
@@ -7,7 +7,8 @@ import Image from "next/image";
 import logo from "@/assets/imgs/delaware.png"
 import iconUser from "@/assets/icons/icon-user.svg"
 import logout from "@/assets/icons/logout.svg"
-
+import { onMicrosoftLogout } from "@/app/api/auth";
+import { useRouter } from "next/navigation";
 
 interface HeaderProps {
   title?: string,
@@ -15,11 +16,19 @@ interface HeaderProps {
 }
 
 export default function Header({ title, text }: HeaderProps) {
+  const router = useRouter();
 
   const [isLogoutVisible, SetIslogoutVisible] = useState(false);
 
   const handleIsActiveLogout = () => {
     SetIslogoutVisible(!isLogoutVisible)
+  }
+
+  const handleLogout = async () => {
+    if (!window) return;
+
+    const microsoftLoginUrl = await onMicrosoftLogout(window.location.origin);
+    router.push(microsoftLoginUrl);
   }
 
   return (
@@ -41,7 +50,7 @@ export default function Header({ title, text }: HeaderProps) {
         </button>
 
         <div className="header-popup">
-          <button>
+          <button onClick={handleLogout}>
             <Image src={logout} alt="icone de logout" />
             Logout
           </button>

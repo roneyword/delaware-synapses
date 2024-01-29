@@ -1,7 +1,9 @@
+"use server";
+import { NextResponse } from "next/server";
 import { storageKeys } from "../clients/config";
 
 // AUTH LOGIN
-export const onMicrosoftSignIn = () => {
+export const onMicrosoftSignIn = async (baseURL: string) => {
   const clientId = process.env.CLIENT_ID;
   const tenantId = process.env.TENANT_ID;
   const response_type = process.env.RESPONSE_TYPE;
@@ -11,27 +13,28 @@ export const onMicrosoftSignIn = () => {
   const code_challenge_method = process.env.CODE_CHALLENGE_METHOD;
   const code_challenge = process.env.CODE_CHALLENGE;
 
-  return `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/authorize?client_id=${clientId}&response_type=${response_type}&redirect_uri=${(window.location.origin)}&response_mode=${response_mode}&scope=${(scope)}&state=${state}&code_challenge_method=${code_challenge_method}&code_challenge=${code_challenge}`;
+  return `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/authorize?client_id=${clientId}&response_type=${response_type}&redirect_uri=${baseURL}&response_mode=${response_mode}&scope=${scope}&state=${state}&code_challenge_method=${code_challenge_method}&code_challenge=${code_challenge}`;
 };
 
 // AUTH LOGOUT
-export const onMicrosoftLogout = () => {
+export const onMicrosoftLogout = async (baseURL: string) => {
   const clientId = process.env.CLIENT_ID;
   const tenantId = process.env.TENANT_ID;
 
-  window.localStorage.removeItem(storageKeys.accessToken);
-  window.localStorage.removeItem(storageKeys.microsoftCode);
+  const response = NextResponse.next();
+  response.cookies.delete(storageKeys.accessToken);
+  response.cookies.delete(storageKeys.microsoftCode);
 
-  window.location.href = `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/logout?client_id=${clientId}&post_logout_redirect_uri=${(window.location.origin)}`;
+  return `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/logout?client_id=${clientId}&post_logout_redirect_uri=${baseURL}`;
 };
 
 // AUTH GET TOKEN
-export const onGenerateAccesTokenByCode = async (code: string) => {
+export const onGenerateAccesTokenByCode = async (code: string, baseURL: string) => {
   const tenantId = process.env.TENANT_ID;
   const clientId = process.env.CLIENT_ID;
   const scope = process.env.SCOPE;
   const codeVerifier = process.env.CODE_CHALLENGE;
-  const redirect_uri = window.location.origin;
+  const redirect_uri = baseURL;
 
   const tokenEndpoint = `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`;
 
@@ -60,7 +63,7 @@ export const onGenerateAccesTokenByCode = async (code: string) => {
       const data = await response.json();
       const accessToken = data.access_token;
 
-      window.localStorage.setItem(storageKeys.accessToken, accessToken);
+      return accessToken;
     } else {
       throw new Error(response.statusText);
     }
