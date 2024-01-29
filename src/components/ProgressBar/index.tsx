@@ -7,7 +7,7 @@ interface ProgressBarProps {
   step: number,
   name: string,
   phase: string,
-  plannedDate: string,
+  plannedDate: string | undefined,
   completeWork: number,
   totalWork: number,
   percentComplete: number,
@@ -49,7 +49,7 @@ export default function ProgressBar({ step, name, phase, plannedDate, totalWork,
               <span>{name}</span>
             </div>
 
-            <time>{plannedDate}</time>
+            {plannedDate && <time>{plannedDate}</time>}
 
           </div>
 

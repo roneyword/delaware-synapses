@@ -1,9 +1,9 @@
-import { httpMethods } from "../clients/config.js";
-import { fetchAPISysnapses } from "../clients/sysnapsesService.js";
-import { HttpMethodsProps } from "../clients/types.js";
-import { PhaseProps } from "./types.js";
+import { httpMethods } from "../clients/config";
+import { fetchAPISysnapses } from "../clients/sysnapsesService";
+import { HttpMethodsProps } from "../clients/types";
+import { PhaseProps } from "./types";
 
-export const findPhasesByProjectId = async (projectUuid: string ) : Promise<PhaseProps[] | [] | undefined> => {
+export const findPhasesByProjectId = async (projectUuid: string): Promise<PhaseProps[] | [] | undefined> => {
   try {
     if (!projectUuid) {
       throw new Error('Field Project UUID is missing.');

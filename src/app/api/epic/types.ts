@@ -19,7 +19,7 @@ export type EpicProps = {
   createdBy?: string;
   updateAt?: Date;
   updatedBy?: string
-  plannedDate?: Date;
+  plannedDate?: string;
 }
 
 export type GroupedEpicsProps = {

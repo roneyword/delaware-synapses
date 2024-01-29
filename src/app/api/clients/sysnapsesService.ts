@@ -1,12 +1,13 @@
+import { cookies } from "next/headers";
 import { storageKeys } from "./config";
 import { HttpMethodsProps } from "./types";
 
-export const fetchAPISysnapses = async (method: Omit<HttpMethodsProps, "GET">, path: string, options?: any) => {
-  const token = localStorage.getItem(storageKeys.accessToken);
+export const fetchAPISysnapses = async (method: HttpMethodsProps, path: string, options?: any) => {
+  const token = cookies().get(storageKeys.accessToken)?.value;
   const baseURL = process.env.BASE_URL || '';
   const url = new URL(path, baseURL);
 
-  Object.entries(options).forEach(([key, value]) => {
+  options && Object.entries(options).forEach(([key, value]) => {
     url.searchParams.append(key, value as string);
   });
 
@@ -18,6 +19,8 @@ export const fetchAPISysnapses = async (method: Omit<HttpMethodsProps, "GET">, p
       Authorization: 'Bearer ' + token,
     },
   });
+
+
 
   if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);

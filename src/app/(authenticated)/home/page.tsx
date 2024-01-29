@@ -3,40 +3,38 @@ import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Wrapper from "@/components/Wrapper";
 
-const itens = [
-  {
-    isActive: true,
-    name: "Pré-projeto Browfield",
-    projectId: 1,
-    projectUuid: "95c97e4c-a32e-4917-b2c1-b828b35e9821",
-  },
-  {
-    isActive: true,
-    name: "Projeto S/4MOVE",
-    projectId: 1,
-    projectUuid: "95c97e4c-a32e-4917-b2c1-b828b35e9821",
-  },
-  {
-    isActive: true,
-    name: "Projeto Calix",
-    projectId: 1,
-    projectUuid: "95c97e4c-a32e-4917-b2c1-b828b35e9821",
-  },
-
-]
+import { HomeProjectsContainer } from "./styles";
+import { ClientProps } from "@/app/api/projects/types";
+import ErrorPage from "@/components/PageError";
+import { useHeader } from "@/hooks/useHeader";
 
 export default async function Home() {
+  // const { updateTitle } = useHeader();
   const responseProjects = await getProjects();
-  console.log(responseProjects)
-
 
   return (
     <>
       <Header />
       <Wrapper>
-        {itens.map(project => (
-          <Card link={`/control-center/${project.projectUuid}`} title={project.name} />
-        ))}
+        {responseProjects && Array.isArray(responseProjects) ? (
+          responseProjects.map((project: ClientProps) => (
+            <HomeProjectsContainer key={project.clientId}>
+              <h2 className="home-projects-title">{project.name}</h2>
+              <div className="home-projects-grid">
+                {project.projectList.map((list) => (
+                  list.isActive && <Card
+                    key={list.projectUuid}
+                    onClick={() => { }}
+                    link={`/control-center/${list.projectUuid}`}
+                    title={list.name}
+                  />
+                ))}
+              </div>
+            </HomeProjectsContainer>
+          ))
+        ) : (
+          <ErrorPage />
+        )}
       </Wrapper>
     </>
   );
