@@ -1,19 +1,18 @@
+import { cookies } from "next/headers";
+import { storageKeys } from "./app/api/clients/config";
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { onGenerateAccesTokenByCode } from "./app/api/auth";
-import { storageKeys } from "./app/api/clients/config";
 
-export async function middleware(request: NextRequest) {
-  const [baseURL, code] = request.url.split('code=');
-  console.log('middleware', baseURL, code);
+export function middleware(req: NextRequest) {
+  const token = cookies().get(storageKeys.accessToken)?.value;
 
-  const accessToken = await onGenerateAccesTokenByCode(code, baseURL);
-  const response = NextResponse.next()
-  response.cookies.set(storageKeys.accessToken, accessToken);
+  if (!token) {
+    return NextResponse.redirect(new URL('/login', req.url));
+  }
 
-  return NextResponse.redirect(new URL(`/home`, request.url));
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: '/',
+  matcher: ['/((?!api|login|_next/static|_next/image|auth|favicon.ico|robots.txt|images|$).*)'],
 }

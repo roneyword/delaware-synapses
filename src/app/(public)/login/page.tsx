@@ -10,9 +10,9 @@ export default function Login() {
   const router = useRouter();
 
   const handleLogin = async () => {
-    if (!window) return;
+    if (!window || !window?.location) return;
 
-    const microsoftLoginUrl = await onMicrosoftSignIn(window.location.origin);
+    const microsoftLoginUrl = await onMicrosoftSignIn();
     router.replace(microsoftLoginUrl);
   }
 

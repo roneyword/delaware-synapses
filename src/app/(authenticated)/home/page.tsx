@@ -35,7 +35,7 @@ export default async function Home() {
       <Header />
       <Wrapper>
         {itens.map(project => (
-          <Card link={`control-center/${project.projectUuid}`} title={project.name} />
+          <Card link={`/control-center/${project.projectUuid}`} title={project.name} />
         ))}
       </Wrapper>
     </>
