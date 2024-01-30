@@ -6,13 +6,13 @@ import type { NextRequest } from 'next/server'
 export function middleware(req: NextRequest) {
   const token = cookies().get(storageKeys.accessToken)?.value;
 
-  if (!token && !req.url.endsWith("/login")) {
-    return NextResponse.redirect(new URL('/login', req.url));
-  }
+  // if (!token && !req.url.endsWith("/login")) {
+  //   return NextResponse.redirect(new URL('/login', req.url));
+  // }
 
-  if (token && req.url.endsWith("/login")) {
-    return NextResponse.redirect(new URL('/home', req.url));
-  }
+  // if (token && req.url.endsWith("/login")) {
+  //   return NextResponse.redirect(new URL('/home', req.url));
+  // }
 
   return NextResponse.next();
 }

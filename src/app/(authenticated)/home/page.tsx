@@ -6,16 +6,16 @@ import Wrapper from "@/components/Wrapper";
 import { HomeProjectsContainer } from "./styles";
 import { ClientProps } from "@/app/api/projects/types";
 import ErrorPage from "@/components/PageError";
-import { useHeader } from "@/hooks/useHeader";
+import Teste from "./teste";
 
 export default async function Home() {
-  // const { updateTitle } = useHeader();
   const responseProjects = await getProjects();
 
   return (
     <>
       <Header />
-      <Wrapper>
+      <Teste responseProjects={responseProjects} />
+      {/* <Wrapper>
         {responseProjects && Array.isArray(responseProjects) ? (
           responseProjects.map((project: ClientProps) => (
             <HomeProjectsContainer key={project.clientId}>
@@ -35,7 +35,7 @@ export default async function Home() {
         ) : (
           <ErrorPage />
         )}
-      </Wrapper>
+      </Wrapper> */}
     </>
   );
 }
