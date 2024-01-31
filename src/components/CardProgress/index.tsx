@@ -2,11 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { CardProgressContainer } from "./styles";
+import { onGetColor, onGetColorStatus } from "@/styles/color";
 interface CardProgressProps {
   percentComplete: number,
   title?: string,
   workTitle?: string,
-  name: string,
+  name: string | number,
   totalWork: number
   completeWork: number
   icon?: any,
@@ -46,18 +47,6 @@ const iconColor = (color: string) =>
     </g>
   </svg>;
 
-const onGetColor = (phase: string) => {
-  const colorMap: Record<string, { bg: string; color: string }> = {
-    prepare: { bg: "#a5b3c5", color: "#69809f" },
-    explore: { bg: "#f4b183", color: "#ed7d31" },
-    realize: { bg: "#a9d18e", color: "#70AD47" },
-    deploy: { bg: "#f66", color: "#FF0000" },
-    run: { bg: "#ab74d5", color: "#7030A0" },
-  };
-
-  return colorMap[phase.toLocaleLowerCase()] || { bg: "", color: "" };
-};
-
 export default function CardProgress({
   percentComplete,
   title,
@@ -75,13 +64,15 @@ export default function CardProgress({
     router.push(`/epic-details/${link}`);
   };
 
+  const typeColor = typeof name === "string" ? onGetColor(name) : onGetColorStatus(name);
+
   return (
-    <CardProgressContainer $percentComplete={percentComplete} $bgColor={onGetColor(name).bg} $color={onGetColor(name).color} $link={link}>
+    <CardProgressContainer $percentComplete={percentComplete} $bgColor={typeColor.bg} $color={typeColor.color} $link={link}>
       {title && <h2 className="card-progress-title">{title}</h2>}
 
       <div className="card-progress" onClick={navigateToRoute}>
         <figure className="card-progress-icon">
-          {icon ? icon : iconColor(onGetColor(name).color)}
+          {icon ? icon : iconColor(typeColor.color)}
         </figure>
 
         <div className="card-progress-wrapper">

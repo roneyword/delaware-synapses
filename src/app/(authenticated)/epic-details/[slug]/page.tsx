@@ -4,7 +4,6 @@ import Wrapper from "@/components/Wrapper";
 import CardProgress from "@/components/CardProgress";
 import ProgressBar from "@/components/ProgressBar";
 import Accordion from "@/components/Accordion";
-
 import iconPast from "@/assets/icons/cc-project.svg";
 
 import {
@@ -19,6 +18,7 @@ import { findFeaturesByFaseIdAndProjectId } from "@/app/api/feature";
 import { fetchUserStoriesData } from "@/app/api/userStories";
 import { findTasksByStoryIdAndProjectId } from "@/app/api/tasks";
 import Legend from "@/components/legend";
+import { onGetColorStatus } from "@/styles/color";
 
 interface EpicDetailsProps {
   params: { slug: string };
@@ -56,24 +56,13 @@ const iconFeatureStatus = (color: string) => (
   </svg>
 );
 
-const onGetColorStatus = (status: number) => {
-  const colorMap: Record<string, { bg: string; color: string }> = {
-    1: { bg: "#ACACAC", color: "#dfdede" },
-    2: { bg: "#FFC000", color: "#FFF2CC" },
-    3: { bg: "#C42828", color: "#F3D4D4" },
-    4: { bg: "#45A49E", color: "#DAEDEC" },
-  };
-
-  return colorMap[status] || { bg: "", color: "" };
-};
-
 export default async function EpicDetails({ params }: EpicDetailsProps) {
   const decript = JSON.parse(cryptography.decript(params.slug));
 
   const responsePhases = await findPhasesByProjectId(decript.project);
 
   const responseEpics = await findEpicsByFaseIdAndProjectId(
-    decript.phase,
+    decript.phaseId,
     decript.project
   );
 
@@ -85,8 +74,7 @@ export default async function EpicDetails({ params }: EpicDetailsProps) {
     ));
 
   const onGetPhase = async () => {
-    const phase = responsePhases?.find((phase) => phase.phaseId === 6020);
-
+    const phase = responsePhases?.find((phase) => phase.phaseId === decript.phaseId);
     if (phase) {
       return (
         <CardProgress
@@ -108,7 +96,7 @@ export default async function EpicDetails({ params }: EpicDetailsProps) {
           title="Epic"
           step={responseEpics[0].step}
           name={responseEpics[0].name}
-          phase={responseEpics[0].title}
+          phase={decript.phaseName}
           plannedDate={responseEpics[0].plannedDate}
           completeWork={responseEpics[0].completeWork}
           totalWork={responseEpics[0].totalWork}
@@ -128,12 +116,12 @@ export default async function EpicDetails({ params }: EpicDetailsProps) {
               completeWork={feature.completeWork}
               workTitle={feature.title}
               percentComplete={feature.percentComplete}
-              name={"prepare"}
+              name={feature.status.id}
               totalWork={feature.totalWork}
-              icon={iconFeatureStatus(onGetColorStatus(1).bg)}
+              icon={iconFeatureStatus(onGetColorStatus(feature.status.id).bg)}
             />
 
-            {getUserStorie(feature.featureId, 1)}
+            {getUserStorie(feature.featureId, 2)}
           </div>
         );
       });
@@ -150,17 +138,16 @@ export default async function EpicDetails({ params }: EpicDetailsProps) {
 
     if (responseUserStorie) {
       const accordion = await Promise.all(
-        (responseUserStorie || []).map(async (user) => {
+        responseUserStorie.map(async (user) => {
           const tasks = await getTasks(user.userStoryId, user.title);
-          return tasks;
+          return <Accordion status={user.status.id} items={tasks} />;
         })
       );
 
-      return <Accordion status={status} items={accordion} />
+      return accordion
     }
 
     return null
-
   };
 
   const getTasks = async (userStoryId: number, titleUser: string): Promise<any> => {
@@ -169,8 +156,7 @@ export default async function EpicDetails({ params }: EpicDetailsProps) {
       decript.project
     );
 
-    return { content: responseTasks, title: titleUser }
-
+    return [{ content: responseTasks, title: titleUser }]
   };
 
   return (
@@ -180,7 +166,7 @@ export default async function EpicDetails({ params }: EpicDetailsProps) {
       <HeaderDetailsContainer>
         <Wrapper>
           <Card
-            link={"/control-center"}
+            link={`/control-center/${decript.project}`}
             title="Control Center"
             text="Back to Dashboard"
             icon={iconPast}

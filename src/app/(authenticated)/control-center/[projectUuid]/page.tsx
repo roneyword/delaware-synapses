@@ -81,7 +81,7 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
           {responsePhases &&
             responsePhases.map((phase) => (
               <CardProgress
-                link={cryptography.encript({ project: params.projectUuid, phase: phase.phaseId })}
+                link={cryptography.encript({ project: params.projectUuid, phaseId: phase.phaseId, phaseName: phase.name })}
                 completeWork={phase.completeWork}
                 percentComplete={phase.percentComplete}
                 title={phase.title}

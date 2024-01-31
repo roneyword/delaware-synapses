@@ -21,7 +21,6 @@ export const CardProgressContainer = styled.div<CardProgressContainerProps>`
   display: flex;
   flex-direction: column;
   flex: 1;
-  /* min-width: 250px; */
 
   .card-progress-title {
     font-weight: 700;

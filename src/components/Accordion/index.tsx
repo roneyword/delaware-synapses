@@ -45,9 +45,8 @@ interface AccordionListProps {
   status: number,
 }
 
-export default function Accordion({ items }: AccordionListProps) {
+export default function Accordion({ items, status }: AccordionListProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-
   const [activeItem, setActiveItem] = useState<number | null>(null);
 
   const handleClick = (index: number) => {
@@ -71,7 +70,7 @@ export default function Accordion({ items }: AccordionListProps) {
                 <h3>{item.title}</h3>
               </div>
 
-              <Status status={1} />
+              <Status status={status as 1 | 2 | 3 | 4} />
             </div>
 
             <div className="acordion-content">
@@ -80,7 +79,7 @@ export default function Accordion({ items }: AccordionListProps) {
                   <li key={i} className={i === activeItem ? "isActive" : ''} onClick={(event) => handleActiveDoc(event, i)}>
                     <div className="accordion-item-header">
                       <span>{task.title}</span>
-                      <Status status={2} />
+                      <Status status={task.status.id} />
                     </div>
 
                     <div className="accordion-item-doc">

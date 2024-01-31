@@ -11,13 +11,13 @@ export async function middleware(req: NextRequest, res: NextResponse) {
     console.log(decoded);
   }
 
-  if (!token && !req.url.endsWith("/login")) {
-    return NextResponse.redirect(new URL('/login', req.url));
-  }
+  // if (!token && !req.url.endsWith("/login")) {
+  //   return NextResponse.redirect(new URL('/login', req.url));
+  // }
 
-  if (token && req.url.endsWith("/login")) {
-    return NextResponse.redirect(new URL('/home', req.url));
-  }
+  // if (token && req.url.endsWith("/login")) {
+  //   return NextResponse.redirect(new URL('/home', req.url));
+  // }
 
   return NextResponse.next();
 }
