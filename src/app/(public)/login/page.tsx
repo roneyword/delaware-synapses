@@ -11,7 +11,7 @@ export default function Login() {
 
   const handleLogin = async () => {
     const microsoftLoginUrl = await onMicrosoftSignIn();
-    router.replace(microsoftLoginUrl);
+    router.push(microsoftLoginUrl);
   }
 
   return (

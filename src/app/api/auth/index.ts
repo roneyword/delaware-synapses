@@ -22,7 +22,7 @@ export const onMicrosoftSignIn = async () => {
 export const onMicrosoftLogout = async () => {
   const clientId = process.env.CLIENT_ID;
   const tenantId = process.env.TENANT_ID;
-  const baseURL = process.env.NEXT_BASE_URL;
+  const baseURL = process.env.NEXT_BASE_URL!;
 
   cookies().delete(storageKeys.accessToken);
   cookies().delete(storageKeys.microsoftCode);
@@ -31,7 +31,7 @@ export const onMicrosoftLogout = async () => {
 };
 
 // AUTH GET TOKEN
-export const onGenerateAccesTokenByCode = async (code: string) => {
+export const onGenerateAccessTokenByCode = async (code: string): Promise<boolean | undefined> => {
   const tenantId = process.env.TENANT_ID;
   const clientId = process.env.CLIENT_ID;
   const scope = process.env.SCOPE;
@@ -61,16 +61,17 @@ export const onGenerateAccesTokenByCode = async (code: string) => {
       body: bodyParams,
     });
 
+    let accessToken: string | undefined;
     if (response.ok) {
       const data = await response.json();
-      const accessToken = data.access_token;
+      accessToken = data.access_token;
 
-      cookies().set(storageKeys.accessToken, accessToken);
-      return;
+      cookies().set(storageKeys.accessToken, accessToken!);
     } else {
       throw new Error(response.statusText);
     }
-  } catch (error) {
+    return !!accessToken;
+  } catch (error: any) {
     console.error('Error exchanging code for token:', error);
   }
 };

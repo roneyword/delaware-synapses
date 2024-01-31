@@ -31,7 +31,7 @@ export default function Home() {
       <Header />
       <Wrapper>
         {itens.map(project => (
-          <Card link={`/control-center/${project.projectUuid}`} title={project.name} />
+          <Card key={project.projectUuid} link={`/control-center/${project.projectUuid}`} title={project.name} />
         ))}
       </Wrapper>
     </>
