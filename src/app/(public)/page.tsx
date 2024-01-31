@@ -1,25 +1,22 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { onGenerateAccesTokenByCode } from "../api/auth";
 import { useEffect } from "react";
+import { onGenerateAccessTokenByCode } from "../api/auth";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function App() {
-  const searchParams = useSearchParams();
   const router = useRouter();
-
-  const handleGenerateToken = async () => {
-    if (searchParams.has("code")) {
-      const code = searchParams.get("code");
-      await onGenerateAccesTokenByCode(code!);
-
-      return router.push("/home");
-    }
-  }
+  const searchParams = useSearchParams();
+  const code = searchParams.get("code");
 
   useEffect(() => {
-    (async () => await handleGenerateToken())();
-  }, [searchParams, router]);
-
-  return router.replace(`/login`);
+  if (code) {
+    try {
+      onGenerateAccessTokenByCode(code as string);
+      router.push("/home");
+    } catch (error) {
+      console.error('Error during login initiation:', error);
+    }
+  }
+}, [router]);
 }

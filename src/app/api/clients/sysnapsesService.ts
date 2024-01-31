@@ -7,9 +7,11 @@ export const fetchAPISysnapses = async (method: HttpMethodsProps, path: string, 
   const baseURL = process.env.BASE_URL || '';
   const url = new URL(path, baseURL);
 
-  options && Object.entries(options).forEach(([key, value]) => {
-    url.searchParams.append(key, value as string);
-  });
+  if (options) {
+    Object.entries(options).forEach(([key, value]) => {
+      url.searchParams.append(key, value as string);
+    });
+  }
 
   const response = await fetch(url, {
     method: method as HttpMethodsProps,
@@ -19,8 +21,6 @@ export const fetchAPISysnapses = async (method: HttpMethodsProps, path: string, 
       Authorization: 'Bearer ' + token,
     },
   });
-
-
 
   if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);

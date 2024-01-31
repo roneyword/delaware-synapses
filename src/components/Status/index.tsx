@@ -18,8 +18,6 @@ const onGetColor = (status: number) => {
 };
 
 export default function Status({ status }: StatusProps) {
-  console.log(onGetColor(status).color)
-  console.log(onGetColor(status).bg)
   return (
     <StatusContainer $color={onGetColor(status).color} $bgColor={onGetColor(status).bg} />
   )

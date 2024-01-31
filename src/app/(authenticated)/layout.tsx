@@ -13,19 +13,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html>
-      <body>
-        <StyledComponentsRegistry>
-          <GlobalStyle />
-          <Container $isBackgroundImg={true}>
-            <Suspense fallback={<Loading />}>
-              <TextHeaderProvider>
-                {children}
-              </ TextHeaderProvider>
-            </Suspense>
-          </ Container>
-        </StyledComponentsRegistry>
-      </body>
-    </html>
+    <StyledComponentsRegistry>
+      <GlobalStyle />
+      <Container $isBackgroundImg={true}>
+        <Suspense fallback={<Loading />}>
+          <TextHeaderProvider>
+            {children}
+          </ TextHeaderProvider>
+        </Suspense>
+      </ Container>
+    </StyledComponentsRegistry>
   )
 }

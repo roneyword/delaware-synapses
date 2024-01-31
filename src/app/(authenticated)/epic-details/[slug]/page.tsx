@@ -1,29 +1,24 @@
 import Card from "@/components/Card";
 import Header from "@/components/Header";
 import Wrapper from "@/components/Wrapper";
-import Image from "next/image";
-import Status from "@/components/Status";
 import CardProgress from "@/components/CardProgress";
 import ProgressBar from "@/components/ProgressBar";
 import Accordion from "@/components/Accordion";
 
 import iconPast from "@/assets/icons/cc-project.svg";
-import iconPhase from "@/assets/icons/label-project-phase.svg";
-import iconEpic from "@/assets/icons/label-epic.svg";
-import iconFeature from "@/assets/icons/label-feature.svg";
-import iconUser from "@/assets/icons/label-user-story.svg";
 
 import {
   HeaderDetailsContainer,
-  DetailsLegendContainer,
   FeatureContainer,
 } from "./styles";
+
 import { findPhasesByProjectId } from "@/app/api/phases";
 import { cryptography } from "@/utils/cryptography";
 import { findEpicsByFaseIdAndProjectId } from "@/app/api/epic";
 import { findFeaturesByFaseIdAndProjectId } from "@/app/api/feature";
 import { fetchUserStoriesData } from "@/app/api/userStories";
 import { findTasksByStoryIdAndProjectId } from "@/app/api/tasks";
+import Legend from "@/components/legend";
 
 interface EpicDetailsProps {
   params: { slug: string };
@@ -72,98 +67,6 @@ const onGetColorStatus = (status: number) => {
   return colorMap[status] || { bg: "", color: "" };
 };
 
-const legendPhase = [
-  {
-    icon: iconPhase,
-    name: "Project Phase",
-  },
-  {
-    icon: iconEpic,
-    name: "Epic",
-  },
-  {
-    icon: iconFeature,
-    name: "Feature",
-  },
-  {
-    icon: iconUser,
-    name: "User Story",
-  },
-];
-
-const legendStatus: { status: 1 | 2 | 3 | 4; name: string }[] = [
-  {
-    status: 1,
-    name: "Not started",
-  },
-  {
-    status: 2,
-    name: "In progress",
-  },
-  {
-    status: 3,
-    name: "Failed",
-  },
-  {
-    status: 4,
-    name: "Done",
-  },
-];
-
-const phases = {
-  percentComplete: 100,
-  title: "",
-  workTitle: "Lorem ipsum dolor sit amet",
-  name: "Prepare",
-  totalWork: 48,
-  completeWork: 48,
-};
-
-const items = [
-  {
-    title: "M01 - Project Prepare tasks",
-    content: [
-      {
-        title: "1. System copy PRD to SBX",
-        status: 1,
-        responsibleName: "Roney berti",
-        plannedDate: "22/04/1989",
-        executionDate: "",
-        documentationUrl: "",
-      },
-      {
-        title: "1. System copy PRD to SBX",
-        status: 1,
-        responsibleName: "Roney berti",
-        plannedDate: "22/04/1989",
-        executionDate: "",
-        documentationUrl: "",
-      },
-    ],
-  },
-  {
-    title: "M01 - Determine Project scope",
-    content: [
-      {
-        title: "1. System copy PRD to SBX",
-        status: 1,
-        responsibleName: "Roney berti",
-        plannedDate: "22/04/1989",
-        executionDate: "",
-        documentationUrl: "",
-      },
-      {
-        title: "1. System copy PRD to SBX",
-        status: 1,
-        responsibleName: "Roney berti",
-        plannedDate: "22/04/1989",
-        executionDate: "",
-        documentationUrl: "",
-      },
-    ],
-  },
-];
-
 export default async function EpicDetails({ params }: EpicDetailsProps) {
   const decript = JSON.parse(cryptography.decript(params.slug));
 
@@ -184,15 +87,18 @@ export default async function EpicDetails({ params }: EpicDetailsProps) {
   const onGetPhase = async () => {
     const phase = responsePhases?.find((phase) => phase.phaseId === 6020);
 
-    return (
-      <CardProgress
-        title={phase?.title}
-        completeWork={phases?.completeWork}
-        percentComplete={phases?.percentComplete}
-        name={phases?.name}
-        totalWork={phases?.totalWork}
-      />
-    );
+    if (phase) {
+      return (
+        <CardProgress
+          title={phase?.title}
+          completeWork={phase?.completeWork}
+          percentComplete={phase?.percentComplete}
+          name={phase?.name}
+          totalWork={phase?.totalWork}
+        />
+      );
+    }
+
   };
 
   const onGetEpic = async () => {
@@ -286,29 +192,8 @@ export default async function EpicDetails({ params }: EpicDetailsProps) {
           {onGetEpic()}
         </Wrapper>
 
-        <Wrapper>
-          <DetailsLegendContainer>
-            <ul className="details-legend-list">
-              {legendPhase.map((phase) => (
-                <li key={phase.name}>
-                  <figure>
-                    <Image src={phase.icon} alt="icon da fase do projeto" />
-                  </figure>
-                  <span>{phase.name}</span>
-                </li>
-              ))}
-            </ul>
+        <Wrapper> <Legend /></Wrapper>
 
-            <ul className="details-legend-list">
-              {legendStatus.map((status) => (
-                <li key={status.name}>
-                  <Status status={status.status} />
-                  <span>{status.name}</span>
-                </li>
-              ))}
-            </ul>
-          </DetailsLegendContainer>
-        </Wrapper>
       </HeaderDetailsContainer>
 
       <Wrapper>
