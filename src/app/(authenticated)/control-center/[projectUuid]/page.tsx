@@ -8,6 +8,7 @@ import { EpicContainer, PhaseContainer } from "./styles";
 import ProgressBar from "@/components/ProgressBar";
 import { findPhasesByProjectId } from "@/app/api/phases";
 import { findEpicsByFaseIdAndProjectId } from "@/app/api/epic";
+import { cryptography } from "@/utils/cryptography";
 
 interface ControlCenterProps {
   params: { projectUuid: string };
@@ -19,7 +20,10 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
 
   if (responsePhases && Array.isArray(responsePhases)) {
     const epicPromises = responsePhases.map(async (phase) => {
-      const epics = await findEpicsByFaseIdAndProjectId(phase.phaseId, params.projectUuid);
+      const epics = await findEpicsByFaseIdAndProjectId(
+        phase.phaseId,
+        params.projectUuid
+      );
       return epics;
     });
 
@@ -28,23 +32,23 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
   }
 
   const getNamePhases = (id: number) => {
-    const phase = responsePhases?.find(phase => phase.phaseId === id)
+    const phase = responsePhases?.find((phase) => phase.phaseId === id);
 
-    return phase ? phase.title : "prepare"
-  }
+    return phase ? phase.title : "prepare";
+  };
 
   const renderProgressBarGroup = (epics: any) => {
     return epics.reduce((acc: any, epic: any, index: any) => {
       const progressBar = (
         <ProgressBar
           key={index}
-          step={epic!.step}
-          name={epic!.name}
-          phase={getNamePhases(epic!.phaseId)}
-          plannedDate={epic!.plannedDate}
-          completeWork={epic!.completeWork}
-          totalWork={epic!.totalWork}
-          percentComplete={epic!.percentComplete}
+          step={epic.step}
+          name={epic.name}
+          phase={getNamePhases(epic.phaseId)}
+          plannedDate={epic.plannedDate}
+          completeWork={epic.completeWork}
+          totalWork={epic.totalWork}
+          percentComplete={epic.percentComplete}
         />
       );
 
@@ -62,10 +66,7 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
 
   return (
     <>
-      <Header
-        title="Control Center"
-        text="Lunar Dynamics - Pré-projeto Browfield"
-      />
+      <Header title="Control Center" />
       <Wrapper>
         <Card
           link={"/home"}
@@ -80,6 +81,7 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
           {responsePhases &&
             responsePhases.map((phase) => (
               <CardProgress
+                link={cryptography.encript({ project: params.projectUuid, phase: phase.phaseId })}
                 completeWork={phase.completeWork}
                 percentComplete={phase.percentComplete}
                 title={phase.title}
@@ -93,7 +95,9 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
       <Wrapper title="EPICS">
         <EpicContainer>
           {progressBarGroups.map((group: any, index: any) => (
-            <div className="epic-column" key={index}>{group}</div>
+            <div className="epic-column" key={index}>
+              {group}
+            </div>
           ))}
         </EpicContainer>
       </Wrapper>

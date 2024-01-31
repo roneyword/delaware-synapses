@@ -44,7 +44,7 @@ export const DetailsLegendContainer = styled.div`
   }
 `;
 
-export const DetailsContentContainer = styled.div`
+export const FeatureContainer = styled.div`
   display: flex;
   gap: 20px;
  

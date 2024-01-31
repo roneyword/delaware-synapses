@@ -5,6 +5,7 @@ interface CardProgressContainerProps {
   $percentComplete: number;
   $color: string;
   $bgColor: string;
+  $link: string | null;
 }
 
 const fillAnimation = (percentComplete: number) => keyframes`
@@ -38,6 +39,7 @@ export const CardProgressContainer = styled.div<CardProgressContainerProps>`
     background-color: ${(props) => props.$bgColor};
     border-radius: 0.75rem;
     padding: 1rem;
+    cursor: ${props => props.$link ? "pointer" : "default"};
 
     .card-progress-icon {
       width: 68px;

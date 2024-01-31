@@ -12,12 +12,28 @@ import iconUsefullDoc from "@/assets/icons/useful-doc.svg"
 
 
 interface ContentProps {
+  name: "string",
+  isAutomated: boolean,
+  status: {
+    id: 1 | 2 | 3 | 4
+    name: string
+  },
+  taskId: number,
+  userStoryId: number,
+  almId: string,
+  pbiStatusId: number,
+  automationId: number,
   title: string,
-  status: number,
+  step: number,
   responsibleName: string,
   plannedDate: string,
   executionDate: string,
-  documentationUrl: string
+  documentationUrl: string,
+  evidenceUrl: string,
+  createAt: string,
+  createdBy: string | null,
+  updateAt: string | null,
+  updatedBy: string | null
 }
 interface AccordionProps {
   title: string,
@@ -26,6 +42,7 @@ interface AccordionProps {
 
 interface AccordionListProps {
   items: AccordionProps[];
+  status: number,
 }
 
 export default function Accordion({ items }: AccordionListProps) {
@@ -59,19 +76,19 @@ export default function Accordion({ items }: AccordionListProps) {
 
             <div className="acordion-content">
               <ul className="accordion-items">
-                {item.content.map((doc, i) => (
+                {item.content.map((task, i) => (
                   <li key={i} className={i === activeItem ? "isActive" : ''} onClick={(event) => handleActiveDoc(event, i)}>
                     <div className="accordion-item-header">
-                      <span>{doc.title}</span>
-                      <Status status={1} />
+                      <span>{task.title}</span>
+                      <Status status={2} />
                     </div>
 
                     <div className="accordion-item-doc">
-                      <p>Responsible: <strong>{doc.responsibleName}</strong></p>
-                      <p>Planned Date: <strong>{doc.plannedDate}</strong></p>
-                      <p>Execultion Date: <strong>{doc.executionDate}</strong></p>
+                      <p>Responsible: <strong>{task.responsibleName}</strong></p>
+                      <p>Planned Date: <strong>{task.plannedDate}</strong></p>
+                      <p>Execultion Date: <strong>{task.executionDate}</strong></p>
 
-                      <Link href={doc.documentationUrl} target="_blank">
+                      <Link href={task.documentationUrl ? task.documentationUrl : ""} target="_blank">
                         <Image src={iconUsefullDoc} alt="icone de uma livro" />
                         UseFul Document
                       </Link>

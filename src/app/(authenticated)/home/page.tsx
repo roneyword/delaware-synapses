@@ -6,7 +6,6 @@ import Wrapper from "@/components/Wrapper";
 import { HomeProjectsContainer } from "./styles";
 import { ClientProps } from "@/app/api/projects/types";
 import ErrorPage from "@/components/PageError";
-import Teste from "./teste";
 
 export default async function Home() {
   const responseProjects = await getProjects();
@@ -14,8 +13,7 @@ export default async function Home() {
   return (
     <>
       <Header />
-      <Teste responseProjects={responseProjects} />
-      {/* <Wrapper>
+      <Wrapper>
         {responseProjects && Array.isArray(responseProjects) ? (
           responseProjects.map((project: ClientProps) => (
             <HomeProjectsContainer key={project.clientId}>
@@ -24,7 +22,7 @@ export default async function Home() {
                 {project.projectList.map((list) => (
                   list.isActive && <Card
                     key={list.projectUuid}
-                    onClick={() => { }}
+                    headerTitle={`${project.name} - ${list.name}`}
                     link={`/control-center/${list.projectUuid}`}
                     title={list.name}
                   />
@@ -35,7 +33,7 @@ export default async function Home() {
         ) : (
           <ErrorPage />
         )}
-      </Wrapper> */}
+      </Wrapper>
     </>
   );
 }

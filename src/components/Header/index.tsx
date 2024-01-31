@@ -4,30 +4,31 @@ import { useState } from "react";
 import { HeaderAvatar, HeaderContainer } from "./styles";
 import Image from "next/image";
 
-import logo from "@/assets/imgs/delaware.png"
-import iconUser from "@/assets/icons/icon-user.svg"
-import logout from "@/assets/icons/logout.svg"
+import logo from "@/assets/imgs/delaware.png";
+import iconUser from "@/assets/icons/icon-user.svg";
+import logout from "@/assets/icons/logout.svg";
 import { onMicrosoftLogout } from "@/app/api/auth";
 import { useRouter } from "next/navigation";
+import { useTextHeader } from "@/hooks/useContextHeader";
 
 interface HeaderProps {
-  title?: string,
-  text?: string
+  title?: string;
 }
 
-export default function Header({ title, text }: HeaderProps) {
+export default function Header({ title }: HeaderProps) {
   const router = useRouter();
+  const { textHeader } = useTextHeader();
 
   const [isLogoutVisible, SetIslogoutVisible] = useState(false);
 
   const handleIsActiveLogout = () => {
-    SetIslogoutVisible(!isLogoutVisible)
-  }
+    SetIslogoutVisible(!isLogoutVisible);
+  };
 
   const handleLogout = async () => {
     const microsoftLoginUrl = await onMicrosoftLogout();
     router.push(microsoftLoginUrl);
-  }
+  };
 
   return (
     <HeaderContainer>
@@ -37,7 +38,7 @@ export default function Header({ title, text }: HeaderProps) {
 
       <div className="header-content">
         {title && <h2>{title}</h2>}
-        {text && <p>{text}</p>}
+        {textHeader && <p>{textHeader}</p>}
       </div>
 
       <HeaderAvatar $isVisible={isLogoutVisible}>
@@ -54,7 +55,6 @@ export default function Header({ title, text }: HeaderProps) {
           </button>
         </div>
       </HeaderAvatar>
-
     </HeaderContainer>
-  )
+  );
 }

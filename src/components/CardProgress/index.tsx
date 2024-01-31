@@ -1,6 +1,7 @@
-import Image from "next/image";
-import { CardProgressContainer } from "./styles";
+"use client"
 
+import { useRouter } from "next/navigation";
+import { CardProgressContainer } from "./styles";
 interface CardProgressProps {
   percentComplete: number,
   title?: string,
@@ -9,6 +10,7 @@ interface CardProgressProps {
   totalWork: number
   completeWork: number
   icon?: any,
+  link?: string | null,
 }
 
 const iconColor = (color: string) =>
@@ -63,13 +65,21 @@ export default function CardProgress({
   name,
   totalWork,
   completeWork,
-  icon }: CardProgressProps) {
+  icon,
+  link = null }: CardProgressProps) {
+  const router = useRouter();
+
+  const navigateToRoute = () => {
+    if (!link) return;
+
+    router.push(`/epic-details/${link}`);
+  };
 
   return (
-    <CardProgressContainer $percentComplete={percentComplete} $bgColor={onGetColor(name).bg} $color={onGetColor(name).color}>
+    <CardProgressContainer $percentComplete={percentComplete} $bgColor={onGetColor(name).bg} $color={onGetColor(name).color} $link={link}>
       {title && <h2 className="card-progress-title">{title}</h2>}
 
-      <div className="card-progress">
+      <div className="card-progress" onClick={navigateToRoute}>
         <figure className="card-progress-icon">
           {icon ? icon : iconColor(onGetColor(name).color)}
         </figure>
