@@ -1,11 +1,6 @@
 import { getProjects } from "@/app/api/projects";
-import Card from "@/components/Card";
 import Header from "@/components/Header";
-import Wrapper from "@/components/Wrapper";
 
-import { HomeProjectsContainer } from "./styles";
-import { ClientProps } from "@/app/api/projects/types";
-import ErrorPage from "@/components/PageError";
 import Teste from "./teste";
 
 export default async function Home() {
@@ -15,27 +10,6 @@ export default async function Home() {
     <>
       <Header />
       <Teste responseProjects={responseProjects} />
-      {/* <Wrapper>
-        {responseProjects && Array.isArray(responseProjects) ? (
-          responseProjects.map((project: ClientProps) => (
-            <HomeProjectsContainer key={project.clientId}>
-              <h2 className="home-projects-title">{project.name}</h2>
-              <div className="home-projects-grid">
-                {project.projectList.map((list) => (
-                  list.isActive && <Card
-                    key={list.projectUuid}
-                    onClick={() => { }}
-                    link={`/control-center/${list.projectUuid}`}
-                    title={list.name}
-                  />
-                ))}
-              </div>
-            </HomeProjectsContainer>
-          ))
-        ) : (
-          <ErrorPage />
-        )}
-      </Wrapper> */}
     </>
   );
 }
