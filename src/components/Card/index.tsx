@@ -3,8 +3,9 @@ import Link from "next/link"
 
 import IconProject from "@/assets/icons/project.svg"
 import { CardContainer } from "./styles"
+import { AnchorHTMLAttributes } from "react"
 
-interface CardProps {
+interface CardProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   title: string,
   text?: string,
   link: string

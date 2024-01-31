@@ -1,109 +1,102 @@
-import Card from "@/components/Card"
-import Header from "@/components/Header"
-import Wrapper from "@/components/Wrapper"
+import Card from "@/components/Card";
+import Header from "@/components/Header";
+import Wrapper from "@/components/Wrapper";
 
-import iconPast from "@/assets/icons/cc-project.svg"
-import CardProgress from "@/components/CardProgress"
-import { PhaseContainer } from "./styles"
-import ProgressBar from "@/components/ProgressBar"
+import iconPast from "@/assets/icons/cc-project.svg";
+import CardProgress from "@/components/CardProgress";
+import { EpicContainer, PhaseContainer } from "./styles";
+import ProgressBar from "@/components/ProgressBar";
+import { findPhasesByProjectId } from "@/app/api/phases";
+import { findEpicsByFaseIdAndProjectId } from "@/app/api/epic";
 
 interface ControlCenterProps {
-  params: { projectUuid: string }
+  params: { projectUuid: string };
 }
 
-const phases = [
-  {
-    percentComplete: 100,
-    title: "Prepare",
-    name: "Prepare",
-    totalWork: 48,
-    completeWork: 48
-  },
-  {
-    percentComplete: 22,
-    title: "Explore",
-    name: "Explore",
-    totalWork: 122,
-    completeWork: 27
-  },
-  {
-    percentComplete: 22,
-    title: "Realize",
-    name: "Realize",
-    totalWork: 122,
-    completeWork: 27
-  },
-  {
-    percentComplete: 22,
-    title: "Deploy",
-    name: "Deploy",
-    totalWork: 122,
-    completeWork: 27
-  },
-  {
-    percentComplete: 22,
-    title: "run",
-    name: "run",
-    totalWork: 122,
-    completeWork: 27
+export default async function ControlCenter({ params }: ControlCenterProps) {
+  const responsePhases = await findPhasesByProjectId(params.projectUuid);
+  let allEpics;
+
+  if (responsePhases && Array.isArray(responsePhases)) {
+    const epicPromises = responsePhases.map(async (phase) => {
+      const epics = await findEpicsByFaseIdAndProjectId(phase.phaseId, params.projectUuid);
+      return epics;
+    });
+
+    const allEpicsNested = await Promise.all(epicPromises);
+    allEpics = allEpicsNested.flat();
   }
 
-]
+  const getNamePhases = (id: number) => {
+    const phase = responsePhases?.find(phase => phase.phaseId === id)
 
-const epics = [
-  {
-    step: 10,
-    name: "Prepare",
-    phases: "Prepare",
-    plannedDate: "29/12/2023",
-    completeWork: 48,
-    totalWork: 48,
-    percentComplete: 100
-  },
-  {
-    step: 5,
-    name: "Explore - ECC SBX",
-    phases: "Explore",
-    plannedDate: "29/12/2023",
-    completeWork: 20,
-    totalWork: 48,
-    percentComplete: 15
-  },
-  {
-    step: 5,
-    name: "Realize - DEV",
-    phases: "Realize",
-    plannedDate: "29/12/2023",
-    completeWork: 20,
-    totalWork: 48,
-    percentComplete: 15
+    return phase ? phase.title : "prepare"
   }
-]
 
-export default function ControlCenter({ params }: ControlCenterProps) {
+  const renderProgressBarGroup = (epics: any) => {
+    return epics.reduce((acc: any, epic: any, index: any) => {
+      const progressBar = (
+        <ProgressBar
+          key={index}
+          step={epic!.step}
+          name={epic!.name}
+          phase={getNamePhases(epic!.phaseId)}
+          plannedDate={epic!.plannedDate}
+          completeWork={epic!.completeWork}
+          totalWork={epic!.totalWork}
+          percentComplete={epic!.percentComplete}
+        />
+      );
+
+      if (index % 3 === 0) {
+        acc.push([progressBar]);
+      } else {
+        acc[acc.length - 1].push(progressBar);
+      }
+
+      return acc;
+    }, []);
+  };
+
+  const progressBarGroups = renderProgressBarGroup(allEpics);
 
   return (
     <>
-      <Header title="Control Center" text="Lunar Dynamics - Pré-projeto Browfield" />
+      <Header
+        title="Control Center"
+        text="Lunar Dynamics - Pré-projeto Browfield"
+      />
       <Wrapper>
-        <Card link={"/home"} title="Projects" text="From clients list" icon={iconPast} />
+        <Card
+          link={"/home"}
+          title="Projects"
+          text="From clients list"
+          icon={iconPast}
+        />
       </Wrapper>
+
       <Wrapper title="PHASES">
         <PhaseContainer>
-          {phases.map(item => (
-            <CardProgress completeWork={item.completeWork} percentComplete={item.percentComplete} title={item.title} name={item.name} totalWork={item.totalWork} />
-          ))}
+          {responsePhases &&
+            responsePhases.map((phase) => (
+              <CardProgress
+                completeWork={phase.completeWork}
+                percentComplete={phase.percentComplete}
+                title={phase.title}
+                name={phase.name}
+                totalWork={phase.totalWork}
+              />
+            ))}
         </PhaseContainer>
       </Wrapper>
 
       <Wrapper title="EPICS">
-        <PhaseContainer>
-          {epics.map(item => (
-            <ProgressBar step={item.step} name={item.name} phase={item.phases} plannedDate={item.plannedDate} completeWork={item.completeWork} totalWork={item.totalWork} percentComplete={item.percentComplete} />
+        <EpicContainer>
+          {progressBarGroups.map((group: any, index: any) => (
+            <div className="epic-column" key={index}>{group}</div>
           ))}
-        </PhaseContainer>
+        </EpicContainer>
       </Wrapper>
     </>
-  )
-
+  );
 }

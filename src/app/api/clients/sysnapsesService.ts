@@ -22,6 +22,8 @@ export const fetchAPISysnapses = async (method: HttpMethodsProps, path: string, 
     },
   });
 
+
+
   if (!response.ok) {
     throw new Error(`HTTP error! Status: ${response.status}`);
   }

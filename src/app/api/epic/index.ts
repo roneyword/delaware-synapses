@@ -3,7 +3,7 @@ import { fetchAPISysnapses } from "../clients/sysnapsesService";
 import { HttpMethodsProps } from "../clients/types";
 import { EpicProps, GroupedEpicsProps } from "./types";
 
-export const findEpicsByFaseIdAndProjectId = async (phaseId: number, projectUuid: string): Promise<GroupedEpicsProps | [] | undefined> => {
+export const findEpicsByFaseIdAndProjectId = async (phaseId: number, projectUuid: string): Promise<EpicProps[] | [] | undefined> => {
   try {
     if (!phaseId) {
       throw new Error('Project UUID is missing.');
@@ -16,14 +16,14 @@ export const findEpicsByFaseIdAndProjectId = async (phaseId: number, projectUuid
     const response: EpicProps[] = await fetchAPISysnapses(
       httpMethods.GET as HttpMethodsProps,
       `/api/v1/epics/${phaseId}`,
-      {projectUuid: projectUuid}
+      { projectUuid: projectUuid }
     );
 
     if (!response) {
       return [];
     }
 
-    return groupEpics(response);
+    return response
   } catch (error) {
     console.error(`Error fetching Epics data: ${error}`);
   }

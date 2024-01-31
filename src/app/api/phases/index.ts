@@ -3,7 +3,7 @@ import { fetchAPISysnapses } from "../clients/sysnapsesService";
 import { HttpMethodsProps } from "../clients/types";
 import { PhaseProps } from "./types";
 
-export const findPhasesByProjectId = async (projectUuid: string ) : Promise<PhaseProps[] | [] | undefined> => {
+export const findPhasesByProjectId = async (projectUuid: string): Promise<PhaseProps[] | [] | undefined> => {
   try {
     if (!projectUuid) {
       throw new Error('Field Project UUID is missing.');

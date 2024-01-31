@@ -108,7 +108,7 @@ export const ProgressBarContainer = styled.div<CardProgressContainerProps>`
         justify-content: flex-end;
         gap: 40px;
         margin-top: 5px;
-        margin-right: 25px;
+        margin-right: 10px;
         color: ${(props) => props.$color};
 
         & > span {
