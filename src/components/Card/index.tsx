@@ -17,10 +17,10 @@ interface CardProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 }
 
 export default function Card({ title, link, text, icon, headerTitle }: CardProps) {
-  const { setTextHeader } = useTextHeader();
+  const { setTextHeader, textHeader } = useTextHeader();
 
   return (
-    <Link href={link} onClick={() => setTextHeader(headerTitle ? headerTitle : "teste")}>
+    <Link href={link} onClick={() => setTextHeader(headerTitle ? headerTitle : textHeader)}>
       <CardContainer>
         <div className="card-content">
           <h2 className="card-title">{title}</h2>

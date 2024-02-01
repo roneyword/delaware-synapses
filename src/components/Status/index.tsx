@@ -7,8 +7,6 @@ interface StatusProps {
   status: StatusType
 }
 
-
-
 export default function Status({ status }: StatusProps) {
   return (
     <StatusContainer $color={onGetColorStatus(status).color} $bgColor={onGetColorStatus(status).bg} />

@@ -2,7 +2,7 @@
 import { createContext, useContext, ReactNode, useState } from 'react';
 
 type TitleHeaderProps = {
-  textHeader: string | null;
+  textHeader: string;
   setTextHeader: (textHeader: string) => void;
 };
 
@@ -13,7 +13,7 @@ type EscolhaProviderProps = {
 };
 
 export const TextHeaderProvider = ({ children }: EscolhaProviderProps) => {
-  const [textHeader, setTextHeader] = useState<string | null>(null);
+  const [textHeader, setTextHeader] = useState<string>("");
 
   return (
     <TextHeaderContext.Provider value={{ textHeader, setTextHeader }}>

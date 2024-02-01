@@ -120,7 +120,6 @@ export default async function EpicDetails({ params }: EpicDetailsProps) {
               totalWork={feature.totalWork}
               icon={iconFeatureStatus(onGetColorStatus(feature.status.id).bg)}
             />
-
             {getUserStorie(feature.featureId, 2)}
           </div>
         );
@@ -172,14 +171,11 @@ export default async function EpicDetails({ params }: EpicDetailsProps) {
             icon={iconPast}
           />
         </Wrapper>
-
         <Wrapper>
           {onGetPhase()}
           {onGetEpic()}
         </Wrapper>
-
         <Wrapper> <Legend /></Wrapper>
-
       </HeaderDetailsContainer>
 
       <Wrapper>

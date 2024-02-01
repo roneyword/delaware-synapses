@@ -73,6 +73,10 @@ export const CardProgressContainer = styled.div<CardProgressContainerProps>`
             margin-bottom: 10px;
             font-size: 0.875rem;
             color: white;
+
+            &:nth-child(2){
+              white-space: nowrap;
+            }
           }
         }
 
