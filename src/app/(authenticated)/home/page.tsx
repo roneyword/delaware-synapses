@@ -1,11 +1,9 @@
-import { getProjects } from "@/app/api/projects";
 import Header from "@/components/Header";
-
 import { HomeProjectsContainer } from "./styles";
-import { ClientProps } from "@/app/api/projects/types";
 import ErrorPage from "@/components/PageError";
 import Wrapper from "@/components/Wrapper";
 import Card from "@/components/Card";
+import { ClientProps, getProjects } from "@/actions/projects";
 
 export default async function Home() {
   const responseProjects = await getProjects();

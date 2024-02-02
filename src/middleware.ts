@@ -1,23 +1,36 @@
+"use server";
+
 import { jwtDecode } from "jwt-decode";
-import { storageKeys } from "./app/api/clients/config";
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { storageKeys } from "./actions/clients/config";
 
-export async function middleware(req: NextRequest, res: NextResponse) {
+export async function middleware(req: NextRequest) {
   const token = req.cookies.get(storageKeys.accessToken)?.value;
 
   if (token) {
     const decoded = jwtDecode(token);
-    console.log(decoded);
+    const expMilis = Number(decoded.exp) * 1000;
+    const currentMillis = new Date().getTime();
+    const isUnhautorized = currentMillis > expMilis;
+    console.log(1, expMilis, currentMillis, (expMilis - currentMillis)/1000/60);
+
+    if (isUnhautorized) {
+      console.log(2);
+      req.cookies.delete(storageKeys.accessToken);
+      return NextResponse.redirect(new URL('/login', req.url));
+    }
+
+    if (req.url.endsWith("/login")) {
+      console.log(4);
+      return NextResponse.redirect(new URL('/home', req.url));
+    }
+  } else {
+    if (!req.url.endsWith("/login")) {
+      console.log(3);
+      return NextResponse.redirect(new URL('/login', req.url));
+    }
   }
-
-  // if (!token && !req.url.endsWith("/login")) {
-  //   return NextResponse.redirect(new URL('/login', req.url));
-  // }
-
-  // if (token && req.url.endsWith("/login")) {
-  //   return NextResponse.redirect(new URL('/home', req.url));
-  // }
 
   return NextResponse.next();
 }

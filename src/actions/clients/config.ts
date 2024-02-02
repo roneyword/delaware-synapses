@@ -1,4 +1,4 @@
-import { StorageKeysProps } from "./types"
+import { StorageKeysProps } from "./types";
 
 export const storageKeys: StorageKeysProps = {
   accessToken: "synapses@accessToken",

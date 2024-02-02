@@ -7,9 +7,9 @@ import Image from "next/image";
 import logo from "@/assets/imgs/delaware.png";
 import iconUser from "@/assets/icons/icon-user.svg";
 import logout from "@/assets/icons/logout.svg";
-import { onMicrosoftLogout } from "@/app/api/auth";
 import { useRouter } from "next/navigation";
 import { useTextHeader } from "@/hooks/useContextHeader";
+import { onMicrosoftLogout } from "@/actions/auth";
 
 interface HeaderProps {
   title?: string;

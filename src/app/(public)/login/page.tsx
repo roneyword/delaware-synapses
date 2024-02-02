@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { Container } from "./styles";
 import logo from "@/assets/imgs/delaware.png"
-import { onMicrosoftSignIn } from "@/app/api/auth";
 import { useRouter } from "next/navigation";
+import { onMicrosoftSignIn } from "@/actions/auth";
 
 export default function Login() {
   const router = useRouter();

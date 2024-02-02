@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from 'next/headers'
-import { storageKeys } from "../clients/config";
+import { storageKeys } from "./clients/config";
 
 // AUTH LOGIN
 export const onMicrosoftSignIn = async () => {
@@ -25,7 +25,6 @@ export const onMicrosoftLogout = async () => {
   const baseURL = process.env.NEXT_BASE_URL!;
 
   cookies().delete(storageKeys.accessToken);
-  cookies().delete(storageKeys.microsoftCode);
 
   return `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/logout?client_id=${clientId}&post_logout_redirect_uri=${baseURL}`;
 };

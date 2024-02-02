@@ -1,3 +1,5 @@
+"user server";
+
 export type StorageKeysProps = {
   accessToken: string;
   microsoftCode: string;

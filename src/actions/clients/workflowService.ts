@@ -1,3 +1,5 @@
+"user server";
+
 import { HttpMethodsProps } from "./types";
 
 export const fetchAPIWorflow = async (method: HttpMethodsProps, path: string, body?: any) => {

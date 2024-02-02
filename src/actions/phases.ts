@@ -1,7 +1,24 @@
-import { httpMethods } from "../clients/config";
-import { fetchAPISysnapses } from "../clients/sysnapsesService";
-import { HttpMethodsProps } from "../clients/types";
-import { PhaseProps } from "./types";
+import { httpMethods } from "./clients/config";
+import { fetchAPISysnapses } from "./clients/sysnapsesService";
+import { HttpMethodsProps } from "./clients/types";
+
+export type PhaseProps = {
+  almId: string;
+  phaseId: number;
+  projectId: number;
+  pbiStatusId: number;
+  completeWork: number;
+  totalWork: number;
+  percentComplete: number;
+  step: number;
+  name: string
+  title: string;
+  createAt: Date;
+  createdBy?: string;
+  updateAt?: Date;
+  updatedBy?: string
+  plannedDate?: Date;
+}
 
 export const findPhasesByProjectId = async (projectUuid: string): Promise<PhaseProps[] | [] | undefined> => {
   try {

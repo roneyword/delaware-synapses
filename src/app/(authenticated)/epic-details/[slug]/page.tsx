@@ -5,20 +5,18 @@ import CardProgress from "@/components/CardProgress";
 import ProgressBar from "@/components/ProgressBar";
 import Accordion from "@/components/Accordion";
 import iconPast from "@/assets/icons/cc-project.svg";
-
+import { cryptography } from "@/utils/cryptography";
+import Legend from "@/components/legend";
+import { onGetColorStatus } from "@/styles/color";
+import { findPhasesByProjectId } from "@/actions/phases";
+import { findEpicsByFaseIdAndProjectId } from "@/actions/epic";
+import { findFeaturesByFaseIdAndProjectId } from "@/actions/feature";
+import { fetchUserStoriesData } from "@/actions/userHistory";
+import { findTasksByStoryIdAndProjectId } from "@/actions/tasks";
 import {
   HeaderDetailsContainer,
   FeatureContainer,
 } from "./styles";
-
-import { findPhasesByProjectId } from "@/app/api/phases";
-import { cryptography } from "@/utils/cryptography";
-import { findEpicsByFaseIdAndProjectId } from "@/app/api/epic";
-import { findFeaturesByFaseIdAndProjectId } from "@/app/api/feature";
-import { fetchUserStoriesData } from "@/app/api/userStories";
-import { findTasksByStoryIdAndProjectId } from "@/app/api/tasks";
-import Legend from "@/components/legend";
-import { onGetColorStatus } from "@/styles/color";
 
 interface EpicDetailsProps {
   params: { slug: string };

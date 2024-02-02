@@ -6,9 +6,9 @@ import iconPast from "@/assets/icons/cc-project.svg";
 import CardProgress from "@/components/CardProgress";
 import { EpicContainer, PhaseContainer } from "./styles";
 import ProgressBar from "@/components/ProgressBar";
-import { findPhasesByProjectId } from "@/app/api/phases";
-import { findEpicsByFaseIdAndProjectId } from "@/app/api/epic";
 import { cryptography } from "@/utils/cryptography";
+import { findPhasesByProjectId } from "@/actions/phases";
+import { findEpicsByFaseIdAndProjectId } from "@/actions/epic";
 
 interface ControlCenterProps {
   params: { projectUuid: string };
