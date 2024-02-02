@@ -1,3 +1,4 @@
+import { NextRequest, NextResponse } from "next/server";
 import { httpMethods } from "./clients/config";
 import { fetchAPISysnapses } from "./clients/sysnapsesService";
 import { HttpMethodsProps } from "./clients/types";
@@ -26,6 +27,10 @@ export const getProjects = async (): Promise<ClientProps[] | [] | undefined> => 
 
     if (!response) {
       return [];
+    }
+
+    if (response.status === 401) {
+      NextResponse.redirect(new URL('/login', ));
     }
 
     return response;

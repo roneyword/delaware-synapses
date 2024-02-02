@@ -4,16 +4,19 @@ import { jwtDecode } from "jwt-decode";
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { storageKeys } from "./actions/clients/config";
+import { cookies } from "next/headers";
 
-export async function middleware(req: NextRequest) {
-  const token = req.cookies.get(storageKeys.accessToken)?.value;
+export async function middleware(req: NextRequest, res: NextResponse) {
+  const token = cookies().get(storageKeys.accessToken)?.value;
+  console.log('token', token?.substring(0, 10));
+  console.log('res', res);
 
   if (token) {
     const decoded = jwtDecode(token);
     const expMilis = Number(decoded.exp) * 1000;
     const currentMillis = new Date().getTime();
     const isUnhautorized = currentMillis > expMilis;
-    console.log(1, expMilis, currentMillis, (expMilis - currentMillis)/1000/60);
+    console.log(1);
 
     if (isUnhautorized) {
       console.log(2);
