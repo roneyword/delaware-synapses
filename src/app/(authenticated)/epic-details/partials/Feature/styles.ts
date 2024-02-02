@@ -1,12 +1,6 @@
 "use client"
 import { styled } from "styled-components";
 
-export const HeaderDetailsContainer = styled.div`
-  display: flex;
-  width: 100%;
-  gap: 0.5rem;
-`;
-
 export const FeatureContainer = styled.div`
   display: flex;
   gap: 20px;
@@ -19,6 +13,3 @@ export const FeatureContainer = styled.div`
     border-radius: 0.5rem 
   }
 `;
-
-
-

@@ -63,6 +63,7 @@ export const CardProgressContainer = styled.div<CardProgressContainerProps>`
         .card-progress-work {
           display: flex;
           justify-content: space-between;
+          
 
           .work-title{
             color: ${props => props.$color};
@@ -74,6 +75,12 @@ export const CardProgressContainer = styled.div<CardProgressContainerProps>`
             font-size: 0.875rem;
             color: white;
 
+            &:nth-child(1){
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              max-width: 80%;
+            }
             &:nth-child(2){
               white-space: nowrap;
             }
