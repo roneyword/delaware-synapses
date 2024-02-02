@@ -3,6 +3,7 @@ import { cryptography } from "@/utils/cryptography";
 import Menu from "../partials/Menu";
 import { findPhasesByProjectId } from "@/actions/phases";
 import { findEpicsByFaseIdAndProjectId } from "@/actions/epic";
+import { findFeaturesByFaseIdAndProjectId } from "@/actions/feature";
 
 interface EpicDetailsProps {
   params: { slug: string };
@@ -29,9 +30,7 @@ export default async function EpicDetails({ params }: EpicDetailsProps) {
     responseEpics = allEpicsNested.flat();
   }
 
-
-
-
+  // const feature = findFeaturesByFaseIdAndProjectId(responseEpics[0]phaseId, .decript.project)
 
 
   // const responseEpics = await findEpicsByFaseIdAndProjectId(

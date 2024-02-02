@@ -27,11 +27,11 @@ export default async function Menu({ token, phases, epics }: MenuProps) {
   const epicFilter = epics.find((epic: any) => epic.phaseId === phaseFilter?.phaseId);
   const epicFindrelatePhase = epics.filter((epic: any) => epic.phaseId === phaseFilter?.phaseId);
 
+
   const onLoadingPhases = async () => {
     const responsePhases = await findPhasesByProjectId(decript.project);
+    // router.push(microsoftLoginUrl);
   }
-
-
 
   const renderPhaseView = () => {
     if (phaseFilter) {
