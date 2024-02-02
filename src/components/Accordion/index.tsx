@@ -11,6 +11,7 @@ import iconBox from "@/assets/icons/project-box.svg"
 import iconUsefullDoc from "@/assets/icons/useful-doc.svg"
 
 
+
 interface ContentProps {
   name: "string",
   isAutomated: boolean,
@@ -45,9 +46,47 @@ interface AccordionListProps {
   status: number,
 }
 
+// const teste = {
+//   status: 123123, //user: status.id
+//   items: [
+//     {
+//       title: "", //user: title
+//       // user: userStoryId/ task: userStoryId
+//       content: [
+//         {
+//           name: "string",
+//           isAutomated: false,
+//           status: {
+//             id: 1 | 2 | 3 | 4,
+//             name: ""
+//           },
+//           taskId: 123123,
+//           userStoryId: 123123123,
+//           almId: "",
+//           pbiStatusId: 123123123,
+//           automationId: 123123123,
+//           title: "",
+//           step: 123123123,
+//           responsibleName: "",
+//           plannedDate: "",
+//           executionDate: "",
+//           documentationUrl: "",
+//           evidenceUrl: "",
+//           createAt: "",
+//           createdBy: "" | null,
+//           updateAt: "" | null,
+//           updatedBy: "" | null
+//         }
+//       ],
+//     }
+//   ]
+// }
+
 export default function Accordion({ items, status }: AccordionListProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [activeItem, setActiveItem] = useState<number | null>(null);
+
+  console.log(items)
 
   const handleClick = (index: number) => {
     setActiveIndex(index === activeIndex ? null : index);

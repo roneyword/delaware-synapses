@@ -1,3 +1,5 @@
+"use server"
+
 import { httpMethods } from "./clients/config";
 import { fetchAPISysnapses } from "./clients/sysnapsesService";
 import { HttpMethodsProps } from "./clients/types";

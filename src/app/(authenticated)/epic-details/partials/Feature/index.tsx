@@ -1,14 +1,19 @@
+"use client";
+
 import Wrapper from "@/components/Wrapper";
 import { FeatureContainer } from "./styles";
 import CardProgress from "@/components/CardProgress";
 import Accordion from "@/components/Accordion";
 import { onGetColorStatus } from "@/styles/color";
+import { findFeaturesByFaseIdAndProjectId } from "@/actions/feature";
+import { cryptography } from "@/utils/cryptography";
+import { fetchUserStoriesData } from "@/actions/userHistory";
+import { findTasksByStoryIdAndProjectId } from "@/actions/tasks";
+import { useEffect, useState } from "react";
 
 interface FeatureProps {
-  token: {
-    [key: string]: string
-  }
-  feature: any,
+  token: any;
+  epic: any;
 }
 
 const iconFeatureStatus = (color: string) => (
@@ -43,70 +48,83 @@ const iconFeatureStatus = (color: string) => (
   </svg>
 );
 
-export default function Feature({ token, feature }: FeatureProps) {
+export default function Feature({ token, epic }: FeatureProps) {
+  const decript = JSON.parse(cryptography.decript(token));
+  const [epicPhase, setEpicPhase] = useState<any>(epic);
+  let allFeatures: any;
+  let allUsers: any;
+  let allTasks: any;
 
-  // const onGetFeature = () => {
-  //   if (feature) {
-  //     return feature.map((feature: any) => {
-  //       return (
-  //         <div className="card-details">
-  //           <CardProgress
-  //             key={feature.almId}
-  //             completeWork={feature.completeWork}
-  //             workTitle={feature.title}
-  //             percentComplete={feature.percentComplete}
-  //             name={feature.status.id}
-  //             totalWork={feature.totalWork}
-  //             icon={iconFeatureStatus(onGetColorStatus(feature.status.id).bg)}
-  //           />
-  //           {getUserStorie(feature.featureId)}
-  //         </div>
-  //       );
-  //     });
-  //   }
+  const getFeaturesForAllEpics = async () => {
+    const responseFeatures = await findFeaturesByFaseIdAndProjectId(
+      epicPhase.epicId,
+      decript.project
+    );
 
-  //   return null;
-  // };
+    return responseFeatures;
+  };
 
-  // const getUserStorie = async (featureId: number) => {
-  //   const responseUserStorie = await fetchUserStoriesData(
-  //     featureId,
-  //     token.project
-  //   );
+  const getUserStorysForAllFeature = async (featureId: number) => {
+    const responseUserStories = await fetchUserStoriesData(
+      featureId,
+      decript.project
+    );
 
-  //   if (responseUserStorie) {
-  //     const accordion = await Promise.all(
-  //       responseUserStorie.map(async (user) => {
-  //         const tasks = await getTasks(user.userStoryId, user.title);
-  //         return <Accordion status={user.status.id} items={tasks} />;
-  //       })
-  //     );
+    return responseUserStories;
+  };
 
-  //     return accordion;
-  //   }
+  const getTasksForAllUser = async (userStoryId: number) => {
+    const responseTasks = await findTasksByStoryIdAndProjectId(
+      userStoryId,
+      decript.project
+    );
 
-  //   return null;
-  // };
+    return responseTasks;
+  };
 
-  // const getTasks = async (
-  //   userStoryId: number,
-  //   titleUser: string
-  // ): Promise<any> => {
-  //   const responseTasks = await findTasksByStoryIdAndProjectId(
-  //     userStoryId,
-  //     token.project
-  //   );
+  const mountedStructureFeature = async () => {
+    allFeatures = await getFeaturesForAllEpics();
+    // setAllFeatures(allFeaturesPromise);
 
-  //   return [{ content: responseTasks, title: titleUser }];
-  // };
+    // console.log(allFeatures)
 
-  // return (
-  //   <Wrapper>
-  //       <FeatureContainer>{onGetFeature()}</FeatureContainer>
-  //     </Wrapper>
-  // )
+    if (allFeatures) {
+      const userPromises = allFeatures.map(async (feature: any) => {
+        const users = await getUserStorysForAllFeature(feature.featureId);
+        return users ? users : undefined;
+      });
+
+      const allUserPromise = await Promise.all(userPromises);
+      const allUsersFlated = allUserPromise.flat();
+      allUsers = allUsersFlated;
+      // setAllUsers(allUsersFlated)
+
+      // console.log(allUsersFlated)
+    }
+
+    if (allUsers) {
+      const tasksPromises = allUsers.map(async (user: any) => {
+        const tasks = await getTasksForAllUser(user.userStoryId);
+        return tasks ? tasks : undefined;
+      });
+
+      const allTaskPromise = await Promise.all(tasksPromises);
+      const allTasksFlated = allTaskPromise.flat();
+      allTasks = allTasksFlated;
+      // setAllTasks(allTasksFlated)
+
+      // console.log(allTasksFlated)
+    }
+  };
+
+  mountedStructureFeature();
+
+  useEffect(() => {
+  }, [epicPhase]);
 
   return (
-    <h1>feature</h1>
-  )
+    <div className="card-details">
+
+    </div>
+  );
 }

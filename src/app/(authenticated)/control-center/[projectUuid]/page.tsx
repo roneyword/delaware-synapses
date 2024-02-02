@@ -9,6 +9,7 @@ import ProgressBar from "@/components/ProgressBar";
 import { cryptography } from "@/utils/cryptography";
 import { findPhasesByProjectId } from "@/actions/phases";
 import { findEpicsByFaseIdAndProjectId } from "@/actions/epic";
+import React from "react";
 
 interface ControlCenterProps {
   params: { projectUuid: string };
@@ -37,32 +38,36 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
     return phase ? phase.title : "prepare";
   };
 
-  const renderProgressBarGroup = (epics: any) => {
-    return epics.reduce((acc: any, epic: any, index: any) => {
-      const progressBar = (
+  const renderGroupedProgressBars = (epics: any) => {
+    const totalItems = epics.length;
+    const groupedProgressBars: any = [[], [], []];
+
+    for (let i = 0; i < totalItems; i++) {
+      const columnIndex = i % 3;
+      groupedProgressBars[columnIndex].push(
         <ProgressBar
-          key={index}
-          step={epic.step}
-          name={epic.name}
-          phase={getNamePhases(epic.phaseId)}
-          plannedDate={epic.plannedDate}
-          completeWork={epic.completeWork}
-          totalWork={epic.totalWork}
-          percentComplete={epic.percentComplete}
+          key={i}
+          step={epics[i].step}
+          name={epics[i].name}
+          phase={getNamePhases(epics[i].phaseId)}
+          plannedDate={epics[i].plannedDate}
+          completeWork={epics[i].completeWork}
+          totalWork={epics[i].totalWork}
+          percentComplete={epics[i].percentComplete}
         />
       );
+    }
 
-      if (index % 3 === 0) {
-        acc.push([progressBar]);
-      } else {
-        acc[acc.length - 1].push(progressBar);
-      }
-
-      return acc;
-    }, []);
+    return groupedProgressBars.map((column: any, index: any) => (
+      <div key={index} style={{ flex: 1 }}>
+        {column.map((progressBar: any, idx: any) => (
+          <React.Fragment key={idx}>{progressBar}</React.Fragment>
+        ))}
+      </div>
+    ));
   };
 
-  const progressBarGroups = renderProgressBarGroup(allEpics);
+  const progressBarGroups = renderGroupedProgressBars(allEpics);
 
   return (
     <>

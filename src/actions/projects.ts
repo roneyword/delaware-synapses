@@ -1,3 +1,4 @@
+"use server"
 import { NextRequest, NextResponse } from "next/server";
 import { httpMethods } from "./clients/config";
 import { fetchAPISysnapses } from "./clients/sysnapsesService";
@@ -30,7 +31,7 @@ export const getProjects = async (): Promise<ClientProps[] | [] | undefined> => 
     }
 
     if (response.status === 401) {
-      NextResponse.redirect(new URL('/login', ));
+      NextResponse.redirect(new URL('/login',));
     }
 
     return response;
