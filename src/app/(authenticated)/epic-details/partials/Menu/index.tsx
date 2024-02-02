@@ -10,6 +10,7 @@ import ProgressBar from "@/components/ProgressBar";
 import { cryptography } from "@/utils/cryptography";
 import CardProgress from "@/components/CardProgress";
 import { useEffect, useState } from "react";
+import { findPhasesByProjectId } from "@/actions/phases";
 
 interface MenuProps {
   token: string,
@@ -17,13 +18,20 @@ interface MenuProps {
   epics: any
 }
 
-export default function Menu({ token, phases, epics }: MenuProps) {
+export default async function Menu({ token, phases, epics }: MenuProps) {
   const decript = JSON.parse(cryptography.decript(token));
   const [phaseName, setPhaseName] = useState<string>(decript.phaseName);
 
   const phaseFilter = phases.find((phase: any) => phase.title === phaseName);
+  const phaseTitle = phaseFilter.title
   const epicFilter = epics.find((epic: any) => epic.phaseId === phaseFilter?.phaseId);
   const epicFindrelatePhase = epics.filter((epic: any) => epic.phaseId === phaseFilter?.phaseId);
+
+  const onLoadingPhases = async () => {
+    const responsePhases = await findPhasesByProjectId(decript.project);
+  }
+
+
 
   const renderPhaseView = () => {
     if (phaseFilter) {
@@ -44,12 +52,9 @@ export default function Menu({ token, phases, epics }: MenuProps) {
       if (phase.name !== phaseName) {
         return (
           <CardProgress
+            link={phase.title}
+            isRefresh={() => setPhaseName(phase.title)}
             key={phase.phaseId}
-            link={cryptography.encript({
-              project: decript.project,
-              phaseId: phase.phaseId,
-              phaseName: phase.name,
-            })}
             completeWork={phase.completeWork}
             percentComplete={phase.percentComplete}
             title={phase.title}
@@ -68,7 +73,7 @@ export default function Menu({ token, phases, epics }: MenuProps) {
         <ProgressBar
           step={epicFilter.step}
           name={epicFilter.name}
-          phase={phaseFilter.title}
+          phase={phaseTitle}
           plannedDate={epicFilter.plannedDate}
           completeWork={epicFilter.completeWork}
           totalWork={epicFilter.totalWork}
@@ -87,7 +92,7 @@ export default function Menu({ token, phases, epics }: MenuProps) {
             key={epic.epicId}
             step={epic.step}
             name={epic.name}
-            phase={phaseFilter.title}
+            phase={phaseTitle}
             plannedDate={epic.plannedDate}
             completeWork={epic.completeWork}
             totalWork={epic.totalWork}
@@ -99,58 +104,57 @@ export default function Menu({ token, phases, epics }: MenuProps) {
   };
 
   useEffect(() => {
+    onLoadingPhases();
   }, [phaseName]);
 
-
-  const handleChange = (name: string) => {
-    setPhaseName(name)
-  }
-
   return (
-    <MenuDetailsContainer>
-      <button onClick={() => handleChange("Explore")}>trocar</button>
-      <div className="header-wrapper">
-        <Wrapper>
-          <Card
-            link={`/control-center/${decript.project}`}
-            title="Control Center"
-            text="Back to Dashboard"
-            icon={iconPast}
-          />
-        </Wrapper>
-      </div>
-      <div className="header-wrapper main">
-        <Wrapper>
-          <div className="phases-container">
-            <div className="phases-container-item">
-              <DropDownCards
-                isDropDown={phases.length > 1}
-                projectName={phaseName}
-                title={phaseName}
-                children={renderPhaseDropdown()}
-              />
-              {renderPhaseView()}
-            </div>
-
-            <div className="phases-container-item">
+    <>
+      <MenuDetailsContainer>
+        <div className="header-wrapper">
+          <Wrapper>
+            <Card
+              link={`/control-center/${decript.project}`}
+              title="Control Center"
+              text="Back to Dashboard"
+              icon={iconPast}
+            />
+          </Wrapper>
+        </div>
+        <div className="header-wrapper main">
+          <Wrapper>
+            <div className="phases-container">
               <div className="phases-container-item">
                 <DropDownCards
-                  isDropDown={epicFindrelatePhase.length > 1}
-                  projectName={phaseFilter.title}
-                  title={"Epic"}
-                  children={renderEpicDropdown()}
+                  isDropDown={phases.length > 1}
+                  projectName={phaseName}
+                  title={phaseName}
+                  children={renderPhaseDropdown()}
                 />
+                {renderPhaseView()}
               </div>
-              {renderEpicView()}
+
+              <div className="phases-container-item">
+                <div className="phases-container-item">
+                  <DropDownCards
+                    isDropDown={epicFindrelatePhase.length > 1}
+                    projectName={phaseTitle}
+                    title={"Epic"}
+                    children={renderEpicDropdown()}
+                  />
+                </div>
+                {renderEpicView()}
+              </div>
             </div>
-          </div>
-        </Wrapper>
-      </div>
-      <div className="header-wrapper">
-        <Wrapper>
-          <Legend />
-        </Wrapper>
-      </div>
-    </MenuDetailsContainer>
+          </Wrapper>
+        </div>
+        <div className="header-wrapper">
+          <Wrapper>
+            <Legend />
+          </Wrapper>
+        </div>
+      </MenuDetailsContainer>
+
+      {/* <Feature token={decript} feature={responseFeature} /> */}
+    </>
   )
 }

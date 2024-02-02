@@ -14,6 +14,7 @@ export const DropDownContainer = styled.div<DropDownContainerProps>`
     & > button {
       display: flex;
       align-items: center;
+      gap: 5px;
       background: none;
       border: none;
 

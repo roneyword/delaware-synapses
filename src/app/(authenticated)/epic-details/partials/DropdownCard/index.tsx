@@ -1,7 +1,7 @@
 "use client"
 
 import { DropDownContainer } from "./styles";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { ReactNode, useState } from "react";
 import { onGetColor } from "@/styles/color";
 
 interface DropDownCards {
@@ -17,25 +17,10 @@ const iconArrow = (color: string) => (
 
 export function DropDownCards({ projectName, title, isDropDown, children }: DropDownCards) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isOpenDropDown = () => {
     setIsOpen(!isOpen)
   }
-
-  const handleClickOutside = (event: any) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
 
   return (
     <DropDownContainer $isOpen={isOpen} $color={onGetColor(projectName).color}>

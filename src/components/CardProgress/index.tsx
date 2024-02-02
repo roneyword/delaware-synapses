@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
 import { useRouter } from "next/navigation";
 import { CardProgressContainer } from "./styles";
 import { onGetColor, onGetColorStatus } from "@/styles/color";
 interface CardProgressProps {
-  percentComplete: number,
-  title?: string,
-  workTitle?: string,
-  name: string | number,
-  totalWork: number
-  completeWork: number
-  icon?: any,
-  link?: string | null,
-  isRefresh?: boolean
+  percentComplete: number;
+  title?: string;
+  workTitle?: string;
+  name: string | number;
+  totalWork: number;
+  completeWork: number;
+  icon?: any;
+  link?: string | null;
+  isRefresh?: (value: string | null) => void;
 }
 
-const iconColor = (color: string) =>
+const iconColor = (color: string) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -46,7 +46,8 @@ const iconColor = (color: string) =>
         d="M 52.980469 48.15625 C 52.980469 50.597656 51.003906 52.578125 48.5625 52.578125 C 46.121094 52.578125 44.144531 50.597656 44.144531 48.15625 C 44.144531 45.71875 46.121094 43.738281 48.5625 43.738281 C 51.003906 43.738281 52.980469 45.71875 52.980469 48.15625 Z M 52.980469 48.15625 "
       />
     </g>
-  </svg>;
+  </svg>
+);
 
 export default function CardProgress({
   percentComplete,
@@ -56,21 +57,25 @@ export default function CardProgress({
   totalWork,
   completeWork,
   icon,
-  isRefresh = false,
-  link = null }: CardProgressProps) {
+  isRefresh,
+  link = null,
+}: CardProgressProps) {
   const router = useRouter();
 
   const navigateToRoute = () => {
-    if (!link) return;
-
-    isRefresh ? router.refresh() : router.push(`/epic-details/${link}`);
-
+    isRefresh ? isRefresh(link) : router.push(`/epic-details/${link}`);
   };
 
-  const typeColor = typeof name === "string" ? onGetColor(name) : onGetColorStatus(name);
+  const typeColor =
+    typeof name === "string" ? onGetColor(name) : onGetColorStatus(name);
 
   return (
-    <CardProgressContainer $percentComplete={percentComplete} $bgColor={typeColor.bg} $color={typeColor.color} $link={link}>
+    <CardProgressContainer
+      $percentComplete={percentComplete}
+      $bgColor={typeColor.bg}
+      $color={typeColor.color}
+      $link={link}
+    >
       {title && <h2 className="card-progress-title">{title}</h2>}
 
       <div className="card-progress" onClick={navigateToRoute}>
@@ -79,12 +84,16 @@ export default function CardProgress({
         </figure>
 
         <div className="card-progress-wrapper">
-          <span className="card-progress-percent-complete">{percentComplete}%</span>
+          <span className="card-progress-percent-complete">
+            {percentComplete}%
+          </span>
 
           <div className="card-progress-content">
             <div className="card-progress-work">
               <span>{workTitle}</span>
-              <span>{completeWork} of {totalWork}</span>
+              <span>
+                {completeWork} of {totalWork}
+              </span>
             </div>
 
             <div className="card-progress-bar"></div>
@@ -92,5 +101,5 @@ export default function CardProgress({
         </div>
       </div>
     </CardProgressContainer>
-  )
+  );
 }
