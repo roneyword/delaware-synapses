@@ -12,6 +12,7 @@ interface CardProgressProps {
   completeWork: number
   icon?: any,
   link?: string | null,
+  isRefresh?: boolean
 }
 
 const iconColor = (color: string) =>
@@ -55,13 +56,15 @@ export default function CardProgress({
   totalWork,
   completeWork,
   icon,
+  isRefresh = false,
   link = null }: CardProgressProps) {
   const router = useRouter();
 
   const navigateToRoute = () => {
     if (!link) return;
 
-    router.push(`/epic-details/${link}`);
+    isRefresh ? router.refresh() : router.push(`/epic-details/${link}`);
+
   };
 
   const typeColor = typeof name === "string" ? onGetColor(name) : onGetColorStatus(name);

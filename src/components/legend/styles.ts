@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 export const DetailsLegendContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 20px;
   width: 100%;
 
   .details-legend-list{
