@@ -1,7 +1,7 @@
 "use client";
 
 import Wrapper from "@/components/Wrapper";
-import { FeatureContainer } from "./styles";
+import { CardDetails } from "./styles";
 import CardProgress from "@/components/CardProgress";
 import Accordion from "@/components/Accordion";
 import { onGetColorStatus } from "@/styles/color";
@@ -11,9 +11,15 @@ import { fetchUserStoriesData } from "@/actions/userHistory";
 import { findTasksByStoryIdAndProjectId } from "@/actions/tasks";
 import { useEffect, useState } from "react";
 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { FreeMode, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/pagination';
+
 interface FeatureProps {
   token: any;
-  epic: any;
+  currentEpic: any;
 }
 
 const iconFeatureStatus = (color: string) => (
@@ -48,16 +54,20 @@ const iconFeatureStatus = (color: string) => (
   </svg>
 );
 
-export default function Feature({ token, epic }: FeatureProps) {
+export default function Feature({ token, currentEpic }: FeatureProps) {
   const decript = JSON.parse(cryptography.decript(token));
-  const [epicPhase, setEpicPhase] = useState<any>(epic);
+
   let allFeatures: any;
   let allUsers: any;
   let allTasks: any;
 
+  const [features, setFeatures] = useState<any>();
+  const [users, setUsers] = useState<any>();
+  const [tasks, setTasks] = useState<any>();
+
   const getFeaturesForAllEpics = async () => {
     const responseFeatures = await findFeaturesByFaseIdAndProjectId(
-      epicPhase.epicId,
+      currentEpic.epicId,
       decript.project
     );
 
@@ -84,9 +94,9 @@ export default function Feature({ token, epic }: FeatureProps) {
 
   const mountedStructureFeature = async () => {
     allFeatures = await getFeaturesForAllEpics();
-    // setAllFeatures(allFeaturesPromise);
+    console.log("allFeatures:", allFeatures);
 
-    // console.log(allFeatures)
+    setFeatures(allFeatures);
 
     if (allFeatures) {
       const userPromises = allFeatures.map(async (feature: any) => {
@@ -97,9 +107,9 @@ export default function Feature({ token, epic }: FeatureProps) {
       const allUserPromise = await Promise.all(userPromises);
       const allUsersFlated = allUserPromise.flat();
       allUsers = allUsersFlated;
-      // setAllUsers(allUsersFlated)
 
-      // console.log(allUsersFlated)
+      console.log("allUsers:", allUsers);
+      setUsers(allUsersFlated);
     }
 
     if (allUsers) {
@@ -111,20 +121,81 @@ export default function Feature({ token, epic }: FeatureProps) {
       const allTaskPromise = await Promise.all(tasksPromises);
       const allTasksFlated = allTaskPromise.flat();
       allTasks = allTasksFlated;
-      // setAllTasks(allTasksFlated)
 
-      // console.log(allTasksFlated)
+      console.log("allTasks:", allTasks);
+      setTasks(allTasksFlated);
     }
   };
 
-  mountedStructureFeature();
-
   useEffect(() => {
-  }, [epicPhase]);
+    mountedStructureFeature();
+  }, [currentEpic]);
 
   return (
-    <div className="card-details">
+    <Wrapper>
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={30}
+        centeredSlides={false}
+        pagination={{
+          clickable: true,
+          type: "progressbar"
+        }}
+        breakpoints={{
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 10
+          },
+          1200: {
+            slidesPerView: 3,
+            spaceBetween: 30
+          },
+        }}
+        modules={[FreeMode, Pagination]}
+        className="mySwiper">
 
-    </div>
+        {features?.map((feature: any) => (
+          <SwiperSlide>
+            <CardDetails key={feature.almId}>
+              <CardProgress
+                completeWork={feature.completeWork}
+                workTitle={feature.title}
+                percentComplete={feature.percentComplete}
+                name={feature.status.id}
+                totalWork={feature.totalWork}
+                icon={iconFeatureStatus(onGetColorStatus(feature.status.id).bg)}
+              />
+
+              {users?.map((user: any) => {
+                if (feature.featureId === user.featureId) {
+                  const uniqueTasks = new Set<number>();
+                  const userTasks = tasks?.filter((task: any) => {
+                    if (
+                      user.userStoryId === task.userStoryId &&
+                      !uniqueTasks.has(task.taskId)
+                    ) {
+                      uniqueTasks.add(task.taskId);
+                      return true;
+                    }
+                    return false;
+                  });
+
+                  if (userTasks && userTasks.length > 0) {
+                    return (
+                      <Accordion
+                        key={user.almId}
+                        status={user.status.id}
+                        items={[{ title: user.title, content: userTasks }]}
+                      />
+                    );
+                  }
+                }
+                return null;
+              })}
+            </CardDetails>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </Wrapper>
   );
 }

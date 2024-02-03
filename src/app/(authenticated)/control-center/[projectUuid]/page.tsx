@@ -9,8 +9,7 @@ import ProgressBar from "@/components/ProgressBar";
 import { cryptography } from "@/utils/cryptography";
 import { PhaseProps, findPhasesByProjectId } from "@/actions/phases";
 import { findEpicsByFaseIdAndProjectId } from "@/actions/epic";
-import React, { Suspense } from "react";
-import Home from "../../home/page";
+import React from "react";
 import PageError from "@/components/PageError";
 interface ControlCenterProps {
   params: { projectUuid: string };

@@ -38,7 +38,7 @@ export const CardProgressContainer = styled.div<CardProgressContainerProps>`
     background-color: ${(props) => props.$bgColor};
     border-radius: 0.75rem;
     padding: 1rem;
-    cursor: ${props => props.$link ? "pointer" : "default"};
+    cursor: ${(props) => (props.$link ? "pointer" : "default")};
 
     .card-progress-icon {
       width: 68px;
@@ -59,35 +59,40 @@ export const CardProgressContainer = styled.div<CardProgressContainerProps>`
       .card-progress-content {
         display: flex;
         flex-direction: column;
+        width: 100%;
 
         .card-progress-work {
           display: flex;
           justify-content: space-between;
-          
+          gap: 20px;
 
-          .work-title{
-            color: ${props => props.$color};
+          .work-title {
+            color: ${(props) => props.$color};
           }
 
           & > span {
-            align-self: flex-end;
+            /* align-self: flex-end; */
             margin-bottom: 10px;
             font-size: 0.875rem;
             color: white;
+            width: 100%;
 
-            &:nth-child(1){
+            &:nth-child(1) {
+              display: -webkit-box;
+              -webkit-line-clamp: 1; 
+              -webkit-box-orient: vertical;
               overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              max-width: 80%;
             }
-            &:nth-child(2){
+
+            &:nth-child(2) {
+              width: auto;
               white-space: nowrap;
             }
           }
         }
 
         .card-progress-bar {
+          display: inline-block;
           position: relative;
           border-radius: 0.375rem;
           height: 1rem;
@@ -99,6 +104,7 @@ export const CardProgressContainer = styled.div<CardProgressContainerProps>`
             top: 2px;
             left: 2px;
             content: "";
+            width: 100%;
             height: calc(100% - 4px);
             background: ${(props) => props.$color};
             border-radius: 0.375rem;

@@ -10,6 +10,7 @@ export const HomeProjectsContainer = styled.div`
 
   .home-projects-grid {
     display: flex;
+    flex-wrap: wrap;
     gap: 15px;
     margin-bottom: 30px;
   }

@@ -90,7 +90,7 @@ export default function CardProgress({
 
           <div className="card-progress-content">
             <div className="card-progress-work">
-              <span>{workTitle}</span>
+              <span className="work-title">{workTitle}</span>
               <span>
                 {completeWork} of {totalWork}
               </span>
