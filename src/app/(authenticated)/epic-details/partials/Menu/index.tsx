@@ -61,6 +61,7 @@ export default function Menu({ token, phases, epics }: MenuProps) {
         return (
           <CardProgress
             link={phase.title}
+            // preciso mudar isso para ID e nao title
             isRefresh={() => setPhaseName(phase.title)}
             key={phase.phaseId}
             completeWork={phase.completeWork}
