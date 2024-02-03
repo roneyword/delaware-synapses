@@ -9,7 +9,7 @@ import { DropDownCards } from "../DropdownCard";
 import ProgressBar from "@/components/ProgressBar";
 import { cryptography } from "@/utils/cryptography";
 import CardProgress from "@/components/CardProgress";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Feature from "../Feature";
 import { findFeaturesByFaseIdAndProjectId } from "@/actions/feature";
 import { fetchUserStoriesData } from "@/actions/userHistory";
@@ -145,6 +145,7 @@ export default function Menu({ token, phases, epics }: MenuProps) {
             completeWork={epicFilter.completeWork}
             totalWork={epicFilter.totalWork}
             percentComplete={epicFilter.percentComplete}
+            tooltip={epicFilter.name}
           />
         </>
       )

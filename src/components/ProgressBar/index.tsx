@@ -12,6 +12,7 @@ interface ProgressBarProps {
   totalWork: number,
   percentComplete: number,
   title?: string,
+  tooltip?: string
 }
 
 const onGetColor = (phase: string) => {
@@ -26,10 +27,10 @@ const onGetColor = (phase: string) => {
   return colorMap[phase.toLocaleLowerCase()] || { bg: "", color: "" };
 };
 
-export default function ProgressBar({ step, name, phase, plannedDate, totalWork, completeWork, percentComplete, title }: ProgressBarProps) {
+export default function ProgressBar({ step, name, phase, plannedDate, totalWork, completeWork, percentComplete, title, tooltip = "" }: ProgressBarProps) {
 
   return (
-    <ProgressBarContainer $percentComplete={percentComplete} $bgColor={onGetColor(phase).bg} $color={onGetColor(phase).color}>
+    <ProgressBarContainer $percentComplete={percentComplete} $bgColor={onGetColor(phase).bg} $color={onGetColor(phase).color} $tooltip={tooltip}>
 
       {title && <h2 className="progress-bar-title">{title}</h2>}
 

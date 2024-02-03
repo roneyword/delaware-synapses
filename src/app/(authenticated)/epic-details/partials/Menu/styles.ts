@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { styled } from "styled-components";
 
 export const MenuDetailsContainer = styled.div`
@@ -7,19 +7,46 @@ export const MenuDetailsContainer = styled.div`
   gap: 0.5rem;
   margin-bottom: 30px;
 
-  .header-wrapper{
-    height: 250px;
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+  }
 
-    &.main{
+  .header-wrapper {
+    height: 250px;
+    
+
+    @media (max-width: 1260px) {
+      height: auto;
+    }
+
+    @media (max-width: 768px) {
       flex: 1;
     }
 
-    .phases-container{
+    &.main {
+      flex: 1;
+
+      @media (max-width: 768px) {
+        order: 2;
+        width: 100%;
+      }
+    }
+
+    .phases-container {
       display: flex;
       gap: 30px;
       height: 100%;
 
-      .phases-container-item{
+      @media (max-width: 1260px) {
+        display: flex;
+        flex-direction: column;
+
+        height: auto;
+      }
+
+      .phases-container-item {
         position: relative;
         width: 100%;
       }
@@ -30,12 +57,12 @@ export const MenuDetailsContainer = styled.div`
 export const FeatureContainer = styled.div`
   display: flex;
   gap: 20px;
- 
-  .card-details{
+
+  .card-details {
     gap: 20px;
     width: 100%;
     padding: 1rem;
     background: white;
-    border-radius: 0.5rem 
+    border-radius: 0.5rem;
   }
 `;

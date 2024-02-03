@@ -11,9 +11,7 @@ export default function RootLayout({
 }) {
   return (
     <Container $isBackgroundImg={true}>
-      <Suspense fallback={<Loading />}>
-        {children}
-      </ Suspense>
+      {children}
     </ Container>
   )
 }

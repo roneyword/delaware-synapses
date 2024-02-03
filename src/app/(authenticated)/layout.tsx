@@ -12,11 +12,9 @@ export default function RootLayout({
 }) {
   return (
     <Container $isBackgroundImg={true}>
-      <Suspense fallback={<Loading />}>
-        <TextHeaderProvider>
-          {children}
-        </ TextHeaderProvider>
-      </Suspense>
+      <TextHeaderProvider>
+        {children}
+      </ TextHeaderProvider>
     </ Container>
   )
 }

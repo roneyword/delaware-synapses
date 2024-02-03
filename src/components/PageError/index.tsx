@@ -1,6 +1,6 @@
 import { ErrorPageContainer } from "./styles";
 
-export default function ErrorPage() {
+export default function PageError() {
   return (
     <ErrorPageContainer>
       <p>Page not found.</p>

@@ -9,6 +9,19 @@ export const HeaderContainer = styled.header`
 display: flex;
 justify-content: space-between;
 
+@media(max-width: 768px){
+  flex-wrap: wrap;
+
+  .header-logo{
+    order: 0;
+  }
+  .header-content{
+    order: 2;
+    width: 100%;
+    margin-top: 20px;
+  }
+}
+
   .header-logo{
     img{
       width: 250px;
@@ -36,6 +49,12 @@ justify-content: space-between;
 
 export const HeaderAvatar = styled.div<HeaderAvatarProps>`
   position: relative;
+
+  @media(max-width: 650px){
+    order: 1;
+}
+
+
   .header-btn{
     background: none;
     border: none;

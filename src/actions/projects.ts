@@ -4,7 +4,7 @@ import { httpMethods } from "./clients/config";
 import { fetchAPISysnapses } from "./clients/sysnapsesService";
 import { HttpMethodsProps } from "./clients/types";
 
-type ProjectProps = {
+export type ProjectProps = {
   projectId: number;
   projectUuid: string;
   name: string

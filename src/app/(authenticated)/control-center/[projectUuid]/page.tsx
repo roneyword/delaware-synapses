@@ -7,10 +7,11 @@ import CardProgress from "@/components/CardProgress";
 import { EpicContainer, PhaseContainer } from "./styles";
 import ProgressBar from "@/components/ProgressBar";
 import { cryptography } from "@/utils/cryptography";
-import { findPhasesByProjectId } from "@/actions/phases";
+import { PhaseProps, findPhasesByProjectId } from "@/actions/phases";
 import { findEpicsByFaseIdAndProjectId } from "@/actions/epic";
-import React from "react";
-
+import React, { Suspense } from "react";
+import Home from "../../home/page";
+import PageError from "@/components/PageError";
 interface ControlCenterProps {
   params: { projectUuid: string };
 }
@@ -18,6 +19,10 @@ interface ControlCenterProps {
 export default async function ControlCenter({ params }: ControlCenterProps) {
   const responsePhases = await findPhasesByProjectId(params.projectUuid);
   let allEpics;
+
+  if (responsePhases === undefined || !Array.isArray(responsePhases)) {
+    return <PageError />;
+  }
 
   if (responsePhases && Array.isArray(responsePhases)) {
     const epicPromises = responsePhases.map(async (phase) => {
@@ -54,6 +59,7 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
           completeWork={epics[i].completeWork}
           totalWork={epics[i].totalWork}
           percentComplete={epics[i].percentComplete}
+          tooltip={epics[i].name}
         />
       );
     }
@@ -66,8 +72,6 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
       </div>
     ));
   };
-
-  const progressBarGroups = renderGroupedProgressBars(allEpics);
 
   return (
     <>
@@ -83,27 +87,26 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
 
       <Wrapper title="PHASES">
         <PhaseContainer>
-          {responsePhases &&
-            responsePhases.map((phase) => (
-              <CardProgress
-                link={cryptography.encript({ project: params.projectUuid, phaseId: phase.phaseId, phaseName: phase.name })}
-                completeWork={phase.completeWork}
-                percentComplete={phase.percentComplete}
-                title={phase.title}
-                name={phase.name}
-                totalWork={phase.totalWork}
-              />
-            ))}
+          {responsePhases.map((phase: PhaseProps) => (
+            <CardProgress
+              link={cryptography.encript({
+                project: params.projectUuid,
+                phaseId: phase.phaseId,
+                phaseName: phase.name,
+              })}
+              completeWork={phase.completeWork}
+              percentComplete={phase.percentComplete}
+              title={phase.title}
+              name={phase.name}
+              totalWork={phase.totalWork}
+            />
+          ))}
         </PhaseContainer>
       </Wrapper>
 
       <Wrapper title="EPICS">
         <EpicContainer>
-          {progressBarGroups.map((group: any, index: any) => (
-            <div className="epic-column" key={index}>
-              {group}
-            </div>
-          ))}
+          {renderGroupedProgressBars(allEpics)}
         </EpicContainer>
       </Wrapper>
     </>
