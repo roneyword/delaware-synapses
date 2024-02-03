@@ -4,7 +4,7 @@ import Wrapper from "@/components/Wrapper";
 import { CardDetails } from "./styles";
 import CardProgress from "@/components/CardProgress";
 import Accordion from "@/components/Accordion";
-import { onGetColorStatus } from "@/styles/color";
+import { onGetColorPhaseStatus } from "@/styles/color";
 import { findFeaturesByFaseIdAndProjectId } from "@/actions/feature";
 import { cryptography } from "@/utils/cryptography";
 import { fetchUserStoriesData } from "@/actions/userHistory";
@@ -127,6 +127,26 @@ export default function Feature({ token, currentEpic }: FeatureProps) {
     }
   };
 
+  const handleStartWorkflow = (userStoryId: string) => {
+    console.log("workflow:", userStoryId)
+
+    // try {
+
+    //   const dataWork = 
+    //   {
+    //     "userStoryId": 3, //userStoryId,
+    //     "environmentId": 1
+    //   };
+
+    //   await runWorkflow(dataWork);
+
+    // } catch (error) {
+    //   console.error("API request failed:", error);
+    //   setError("Error fetching data. Please try again.");
+    //   dispatch(updateLoadingOpen(false));
+    // }
+  }
+
   useEffect(() => {
     mountedStructureFeature();
   }, [currentEpic]);
@@ -163,7 +183,9 @@ export default function Feature({ token, currentEpic }: FeatureProps) {
                 percentComplete={feature.percentComplete}
                 name={feature.status.id}
                 totalWork={feature.totalWork}
-                icon={iconFeatureStatus(onGetColorStatus(feature.status.id).bg)}
+                icon={iconFeatureStatus(onGetColorPhaseStatus(feature.status.id).primary)}
+                link={null}
+                isFeature={true}
               />
 
               {users?.map((user: any) => {
@@ -184,8 +206,9 @@ export default function Feature({ token, currentEpic }: FeatureProps) {
                     return (
                       <Accordion
                         key={user.almId}
-                        status={user.status.id}
                         items={[{ title: user.title, content: userTasks }]}
+                        status={user.status.id}
+                        handleClick={() => handleStartWorkflow(user.userStoryId)}
                       />
                     );
                   }

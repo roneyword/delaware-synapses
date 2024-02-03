@@ -59,6 +59,11 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
           totalWork={epics[i].totalWork}
           percentComplete={epics[i].percentComplete}
           tooltip={epics[i].name}
+          link={cryptography.encript({
+            project: params.projectUuid,
+            phaseId: epics[i].phaseId,
+            epicId: epics[i].epicId,
+          })}
         />
       );
     }
@@ -71,6 +76,7 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
       </div>
     ));
   };
+
 
   return (
     <>
@@ -91,7 +97,6 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
               link={cryptography.encript({
                 project: params.projectUuid,
                 phaseId: phase.phaseId,
-                phaseName: phase.name,
               })}
               completeWork={phase.completeWork}
               percentComplete={phase.percentComplete}

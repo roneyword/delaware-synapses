@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { styled } from "styled-components";
 
 export const AccordionContainer = styled.div`
@@ -35,19 +35,40 @@ export const AccordionContainer = styled.div`
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 10px;
         padding-bottom: 5px;
         border-bottom: 2px solid #393939;
         cursor: pointer;
 
-        .accordion-header-title{
+        .accordion-header-title {
           display: flex;
           align-items: center;
+          justify-content: space-between;
           gap: 10px;
 
           & > h3 {
             font-size: 16px;
             color: #393939;
             font-weight: 700;
+          }
+        }
+
+        .accordion-header-actions {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          .btn-run {
+            border: none;
+            background: none;
+            width: 45px;
+            height: auto;
+            line-height: 0;
+
+            img {
+              width: 100%;
+              height: auto;
+            }
           }
         }
       }
@@ -57,12 +78,12 @@ export const AccordionContainer = styled.div`
         overflow: hidden;
         cursor: pointer;
 
-        .accordion-items{
+        .accordion-items {
           list-style: none;
           padding: 0;
           margin: 0;
 
-          & > li{
+          & > li {
             border-bottom: 2px solid #f2f2f2;
             max-height: 45px;
             overflow: hidden;
@@ -72,21 +93,21 @@ export const AccordionContainer = styled.div`
               transition: max-height 0.3s linear;
             }
 
-            .accordion-item-header{
+            .accordion-item-header {
               display: flex;
               align-items: center;
               justify-content: space-between;
-              padding-left: 57px;
+              padding-left: 20px;
             }
 
-            .accordion-item-doc{
-              background: #F2F2F2;
+            .accordion-item-doc {
+              background: #f2f2f2;
               margin-top: 10px;
-              padding-left: 57px;
+              padding-left: 20px;
               padding-top: 10px;
               padding-bottom: 10px;
 
-              & > p{
+              & > p {
                 margin-bottom: 5px;
               }
 

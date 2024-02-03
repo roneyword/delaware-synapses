@@ -6,6 +6,7 @@ interface CardProgressContainerProps {
   $color: string;
   $bgColor: string;
   $link: string | null;
+  $isFeature: boolean
 }
 
 const fillAnimation = (percentComplete: number) => keyframes`
@@ -53,7 +54,8 @@ export const CardProgressContainer = styled.div<CardProgressContainerProps>`
 
       .card-progress-percent-complete {
         font-size: 1.125rem;
-        color: white;
+        /* color: white; */
+        color: ${props => !props.$isFeature ? "white" : props.$color};
       }
 
       .card-progress-content {
@@ -65,16 +67,11 @@ export const CardProgressContainer = styled.div<CardProgressContainerProps>`
           display: flex;
           justify-content: space-between;
           gap: 20px;
-
-          .work-title {
-            color: ${(props) => props.$color};
-          }
-
+          
           & > span {
-            /* align-self: flex-end; */
             margin-bottom: 10px;
             font-size: 0.875rem;
-            color: white;
+            color: ${props => !props.$isFeature ? "white" : props.$color};
             width: 100%;
 
             &:nth-child(1) {

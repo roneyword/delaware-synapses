@@ -1,7 +1,10 @@
+"use client"
+
 import Image from "next/image";
 import iconCrow from "@/assets/icons/crown.svg"
 
 import { ProgressBarContainer } from "./styles";
+import { useRouter } from "next/navigation";
 
 interface ProgressBarProps {
   step: number,
@@ -12,10 +15,11 @@ interface ProgressBarProps {
   totalWork: number,
   percentComplete: number,
   title?: string,
-  tooltip?: string
+  tooltip?: string,
+  link?: string | null
 }
 
-const onGetColor = (phase: string) => {
+const onGetColorPhase = (phase: string) => {
   const colorMap: Record<string, { bg: string; color: string }> = {
     prepare: { bg: "#a5b3c5", color: "#69809f" },
     explore: { bg: "#f4b183", color: "#ed7d31" },
@@ -27,10 +31,16 @@ const onGetColor = (phase: string) => {
   return colorMap[phase.toLocaleLowerCase()] || { bg: "", color: "" };
 };
 
-export default function ProgressBar({ step, name, phase, plannedDate, totalWork, completeWork, percentComplete, title, tooltip = "" }: ProgressBarProps) {
+export default function ProgressBar({ step, name, phase, plannedDate, totalWork, completeWork, percentComplete, title, tooltip = "", link = "" }: ProgressBarProps) {
+  const route = useRouter()
+
+  const handleRouteEpicDetails = () => {
+    if (!link) return
+    route.push(`/epic-details/${link}`)
+  }
 
   return (
-    <ProgressBarContainer $percentComplete={percentComplete} $bgColor={onGetColor(phase).bg} $color={onGetColor(phase).color} $tooltip={tooltip}>
+    <ProgressBarContainer $percentComplete={percentComplete} $bgColor={onGetColorPhase(phase).bg} $color={onGetColorPhase(phase).color} $tooltip={tooltip} $link={link} onClick={() => handleRouteEpicDetails()} >
 
       {title && <h2 className="progress-bar-title">{title}</h2>}
 

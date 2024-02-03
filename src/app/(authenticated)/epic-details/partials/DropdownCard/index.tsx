@@ -2,7 +2,7 @@
 
 import { DropDownContainer } from "./styles";
 import { ReactNode, useState } from "react";
-import { onGetColor } from "@/styles/color";
+import { onGetColorPhase } from "@/styles/color";
 
 interface DropDownCards {
   title: string;
@@ -23,10 +23,10 @@ export function DropDownCards({ projectName, title, isDropDown, children }: Drop
   }
 
   return (
-    <DropDownContainer $isOpen={isOpen} $color={onGetColor(projectName).color}>
+    <DropDownContainer $isOpen={isOpen} $color={onGetColorPhase(projectName).secundary}>
       <div className="phases-dropdown-title">
         <button onClick={() => isOpenDropDown()}>
-          <h2>{title}</h2>{isDropDown && iconArrow(onGetColor(projectName).color)}
+          <h2>{title}</h2>{isDropDown && iconArrow(onGetColorPhase(projectName).secundary)}
         </button>
       </div>
 

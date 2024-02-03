@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { CardProgressContainer } from "./styles";
-import { onGetColor, onGetColorStatus } from "@/styles/color";
+import { onGetColorPhase, onGetColorPhaseStatus } from "@/styles/color";
 interface CardProgressProps {
   percentComplete: number;
   title?: string;
@@ -12,6 +12,7 @@ interface CardProgressProps {
   completeWork: number;
   icon?: any;
   link?: string | null;
+  isFeature?: boolean,
   isRefresh?: (value: string | null) => void;
 }
 
@@ -58,29 +59,32 @@ export default function CardProgress({
   completeWork,
   icon,
   isRefresh,
+  isFeature = false,
   link = null,
 }: CardProgressProps) {
   const router = useRouter();
 
   const navigateToRoute = () => {
+    if (!link) return
     isRefresh ? isRefresh(link) : router.push(`/epic-details/${link}`);
   };
 
   const typeColor =
-    typeof name === "string" ? onGetColor(name) : onGetColorStatus(name);
+    typeof name === "string" ? onGetColorPhase(name) : onGetColorPhaseStatus(name);
 
   return (
     <CardProgressContainer
       $percentComplete={percentComplete}
-      $bgColor={typeColor.bg}
-      $color={typeColor.color}
+      $bgColor={typeof name === "string" ? typeColor.primary : typeColor.secundary}
+      $color={typeColor.primary}
       $link={link}
+      $isFeature={isFeature}
     >
       {title && <h2 className="card-progress-title">{title}</h2>}
 
       <div className="card-progress" onClick={navigateToRoute}>
         <figure className="card-progress-icon">
-          {icon ? icon : iconColor(typeColor.color)}
+          {icon ? icon : iconColor(typeColor.secundary)}
         </figure>
 
         <div className="card-progress-wrapper">
@@ -90,7 +94,7 @@ export default function CardProgress({
 
           <div className="card-progress-content">
             <div className="card-progress-work">
-              <span className="work-title">{workTitle}</span>
+              <span>{workTitle}</span>
               <span>
                 {completeWork} of {totalWork}
               </span>

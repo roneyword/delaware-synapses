@@ -20,13 +20,13 @@ interface MenuProps {
 
 export default function Menu({ token, phases, epics }: MenuProps) {
   const decript = JSON.parse(cryptography.decript(token));
-  const [phaseName, setPhaseName] = useState<string>(decript.phaseName);
+  const phaseFindName = phases.find((phase: any) => phase.phaseId === decript.phaseId);
+  const [phaseName, setPhaseName] = useState<string>(phaseFindName.name);
 
   const phaseFilter = phases.find((phase: any) => phase.title === phaseName);
-  const epicFilter = epics.find((epic: any) => epic.phaseId === phaseFilter?.phaseId);
+  const epicFilter = epics.find((epic: any) => epic.phaseId === decript.epicId ? decript.epicId : phaseFilter?.phaseId);
 
   const [currentEpic, setcurrentEpic] = useState<any>(epicFilter);
-
 
   const phaseTitle = phaseFilter.title
   const epicFindrelatePhase = epics.filter((epic: any) => epic.phaseId === phaseFilter?.phaseId);
@@ -51,14 +51,6 @@ export default function Menu({ token, phases, epics }: MenuProps) {
           />
         </>
       )
-      // return (
-      //   <CardProgress
-      //     completeWork={phaseFilter.completeWork}
-      //     percentComplete={phaseFilter.percentComplete}
-      //     name={phaseFilter.name}
-      //     totalWork={phaseFilter.totalWork}
-      //   />
-      // );
     }
     return null;
   };
@@ -106,17 +98,6 @@ export default function Menu({ token, phases, epics }: MenuProps) {
           />
         </>
       )
-      // return (
-      //   <ProgressBar
-      //     step={epicFilter.step}
-      //     name={epicFilter.name}
-      //     phase={phaseTitle}
-      //     plannedDate={epicFilter.plannedDate}
-      //     completeWork={epicFilter.completeWork}
-      //     totalWork={epicFilter.totalWork}
-      //     percentComplete={epicFilter.percentComplete}
-      //   />
-      // );
     }
     return null;
   };

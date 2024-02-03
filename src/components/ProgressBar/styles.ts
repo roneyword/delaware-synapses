@@ -6,6 +6,7 @@ interface CardProgressContainerProps {
   $color: string;
   $bgColor: string;
   $tooltip: string;
+  $link: string | null;
 }
 
 const fillAnimation = (percentComplete: number) => keyframes`
@@ -21,6 +22,7 @@ export const ProgressBarContainer = styled.div<CardProgressContainerProps>`
   width: 100%;
   display: flex;
   flex-direction: column;
+  cursor: ${props => props.$link ? "pointer" : "default"};
 
   .progress-bar-title {
     font-weight: 700;

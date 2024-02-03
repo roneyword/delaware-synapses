@@ -9,9 +9,7 @@ import Status from "../Status";
 
 import iconBox from "@/assets/icons/project-box.svg"
 import iconUsefullDoc from "@/assets/icons/useful-doc.svg"
-
-
-
+import iconRunBtn from "@/assets/icons/run-btn.svg"
 interface ContentProps {
   name: "string",
   isAutomated: boolean,
@@ -38,12 +36,14 @@ interface ContentProps {
 }
 interface AccordionProps {
   title: string,
+  // handleRun: (userStoryId: string) => void,
   content: ContentProps[],
 }
 
 interface AccordionListProps {
   items: AccordionProps[];
   status: number,
+  handleClick: () => void,
 }
 
 // const teste = {
@@ -82,17 +82,15 @@ interface AccordionListProps {
 //   ]
 // }
 
-export default function Accordion({ items, status }: AccordionListProps) {
+export default function Accordion({ items, status, handleClick }: AccordionListProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [activeItem, setActiveItem] = useState<number | null>(null);
 
-  console.log(items)
-
-  const handleClick = (index: number) => {
+  const handleIsOpenAccordion = (index: number) => {
     setActiveIndex(index === activeIndex ? null : index);
   };
 
-  const handleActiveDoc = (event: React.MouseEvent, index: number) => {
+  const handleisOpenDoc = (event: React.MouseEvent, index: number) => {
     event.stopPropagation();
     setActiveItem(index === activeItem ? null : index);
   };
@@ -101,21 +99,25 @@ export default function Accordion({ items, status }: AccordionListProps) {
     <AccordionContainer>
       <ul className="accordion-list">
         {items.map((item, index) => (
-          <li key={index} className={index === activeIndex ? "isActive" : ''} onClick={() => handleClick(index)}>
+          <li key={index} className={index === activeIndex ? "isActive" : ''} >
             <div className="accordion-header">
-              <div className="accordion-header-title">
+              <div className="accordion-header-title" onClick={() => handleIsOpenAccordion(index)}>
                 <figure><Image src={iconBox} alt="icone de uma caixa" /></figure>
 
                 <h3>{item.title}</h3>
               </div>
 
-              <Status status={status as 1 | 2 | 3 | 4} />
+              <div className="accordion-header-actions">
+                <button onClick={handleClick} className="btn-run"><Image src={iconRunBtn} alt="icone de play" /></button>
+                <Status status={status as 1 | 2 | 3 | 4} />
+              </div>
+
             </div>
 
             <div className="acordion-content">
               <ul className="accordion-items">
                 {item.content.map((task, i) => (
-                  <li key={i} className={i === activeItem ? "isActive" : ''} onClick={(event) => handleActiveDoc(event, i)}>
+                  <li key={i} className={i === activeItem ? "isActive" : ''} onClick={(event) => handleisOpenDoc(event, i)}>
                     <div className="accordion-item-header">
                       <span>{task.title}</span>
                       <Status status={task.status.id} />
