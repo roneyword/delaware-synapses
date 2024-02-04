@@ -20,11 +20,19 @@ interface MenuProps {
 
 export default function Menu({ token, phases, epics }: MenuProps) {
   const decript = JSON.parse(cryptography.decript(token));
+
   const phaseFindName = phases.find((phase: any) => phase.phaseId === decript.phaseId);
+
   const [phaseName, setPhaseName] = useState<string>(phaseFindName.name);
 
   const phaseFilter = phases.find((phase: any) => phase.title === phaseName);
-  const epicFilter = epics.find((epic: any) => epic.phaseId === decript.epicId ? decript.epicId : phaseFilter?.phaseId);
+  let epicFilter: any;
+
+  if (decript.epicId) {
+    epicFilter = epics.find((epic: any) => epic.epicId === decript.epicId);
+  } else if (phaseFilter?.phaseId) {
+    epicFilter = epics.find((epic: any) => epic.phaseId === phaseFilter.phaseId);
+  }
 
   const [currentEpic, setcurrentEpic] = useState<any>(epicFilter);
 
@@ -60,8 +68,10 @@ export default function Menu({ token, phases, epics }: MenuProps) {
       if (phase.name !== phaseName) {
         return (
           <CardProgress
-            link={phase.title}
-            // preciso mudar isso para ID e nao title
+            link={cryptography.encript({
+              project: decript.project,
+              phaseId: phase.phaseId,
+            })}
             isRefresh={() => setPhaseName(phase.title)}
             key={phase.phaseId}
             completeWork={phase.completeWork}
@@ -116,6 +126,12 @@ export default function Menu({ token, phases, epics }: MenuProps) {
             completeWork={epic.completeWork}
             totalWork={epic.totalWork}
             percentComplete={epic.percentComplete}
+            link={cryptography.encript({
+              project: decript.project,
+              phaseId: epics.phaseId,
+              epicId: epics.epicId,
+            })}
+            isRefresh={() => setPhaseName("Prepare")}
           />
         );
       })

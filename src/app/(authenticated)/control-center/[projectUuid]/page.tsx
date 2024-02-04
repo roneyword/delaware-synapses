@@ -77,7 +77,6 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
     ));
   };
 
-
   return (
     <>
       <Header title="Control Center" />

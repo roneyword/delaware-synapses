@@ -15,7 +15,7 @@ export default function Login() {
   }
 
   return (
-    <Container>
+    <Container >
       <figure className="logo">
         <Image src={logo} alt="logo marca" />
       </figure>

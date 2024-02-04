@@ -128,8 +128,9 @@ const IsTooltip = (props: string) =>
   props.length > 0 &&
   css`
     &::before {
-      content: "asdasdasdasd";
+      content: '${props}';
       position: absolute;
+      white-space: nowrap;
       left: 50%;
       top: -50px;
       width: auto;

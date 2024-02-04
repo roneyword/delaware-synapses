@@ -1,22 +1,23 @@
-"use client"
+"use client";
 
 import Image from "next/image";
-import iconCrow from "@/assets/icons/crown.svg"
+import iconCrow from "@/assets/icons/crown.svg";
 
 import { ProgressBarContainer } from "./styles";
 import { useRouter } from "next/navigation";
 
 interface ProgressBarProps {
-  step: number,
-  name: string,
-  phase: string,
-  plannedDate: string | undefined,
-  completeWork: number,
-  totalWork: number,
-  percentComplete: number,
-  title?: string,
-  tooltip?: string,
-  link?: string | null
+  step: number;
+  name: string;
+  phase: string;
+  plannedDate: string | undefined;
+  completeWork: number;
+  totalWork: number;
+  percentComplete: number;
+  title?: string;
+  tooltip?: string;
+  link?: string | null;
+  isRefresh?: (value: string | null) => void;
 }
 
 const onGetColorPhase = (phase: string) => {
@@ -31,17 +32,35 @@ const onGetColorPhase = (phase: string) => {
   return colorMap[phase.toLocaleLowerCase()] || { bg: "", color: "" };
 };
 
-export default function ProgressBar({ step, name, phase, plannedDate, totalWork, completeWork, percentComplete, title, tooltip = "", link = "" }: ProgressBarProps) {
-  const route = useRouter()
+export default function ProgressBar({
+  step,
+  name,
+  phase,
+  plannedDate,
+  totalWork,
+  completeWork,
+  percentComplete,
+  title,
+  tooltip,
+  link = "",
+  isRefresh,
+}: ProgressBarProps) {
+  const route = useRouter();
 
   const handleRouteEpicDetails = () => {
-    if (!link) return
-    route.push(`/epic-details/${link}`)
-  }
+    if (!link) return;
+    isRefresh ? isRefresh(link) : route.push(`/epic-details/${link}`);
+  };
 
   return (
-    <ProgressBarContainer $percentComplete={percentComplete} $bgColor={onGetColorPhase(phase).bg} $color={onGetColorPhase(phase).color} $tooltip={tooltip} $link={link} onClick={() => handleRouteEpicDetails()} >
-
+    <ProgressBarContainer
+      $percentComplete={percentComplete}
+      $bgColor={onGetColorPhase(phase).bg}
+      $color={onGetColorPhase(phase).color}
+      $tooltip={tooltip ? tooltip : ""}
+      $link={link}
+      onClick={() => handleRouteEpicDetails()}
+    >
       {title && <h2 className="progress-bar-title">{title}</h2>}
 
       <div className="progress-bar-wrapper">
@@ -59,16 +78,16 @@ export default function ProgressBar({ step, name, phase, plannedDate, totalWork,
             </div>
 
             {plannedDate && <time>{plannedDate}</time>}
-
           </div>
 
           <div className="progress-bar-work">
-            <span>{completeWork} of {totalWork}</span>
+            <span>
+              {completeWork} of {totalWork}
+            </span>
             <span>{percentComplete}%</span>
           </div>
         </div>
       </div>
-
     </ProgressBarContainer>
-  )
+  );
 }

@@ -26,10 +26,6 @@ export type EpicProps = {
   plannedDate?: string;
 }
 
-export type GroupedEpicsProps = {
-  [key: string]: EpicProps[]
-}
-
 export const findEpicsByFaseIdAndProjectId = async (phaseId: number, projectUuid: string): Promise<EpicProps[] | [] | undefined> => {
   try {
     if (!phaseId) {
