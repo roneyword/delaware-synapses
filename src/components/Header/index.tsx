@@ -9,7 +9,6 @@ import iconUser from "@/assets/icons/icon-user.svg";
 import logout from "@/assets/icons/logout.svg";
 import { useRouter } from "next/navigation";
 import { useTextHeader } from "@/hooks/useContextHeader";
-import { onMicrosoftLogout } from "@/actions/auth";
 
 interface HeaderProps {
   title?: string;
@@ -26,8 +25,8 @@ export default function Header({ title }: HeaderProps) {
   };
 
   const handleLogout = async () => {
-    const microsoftLoginUrl = await onMicrosoftLogout();
-    router.push(microsoftLoginUrl);
+    const {data} = await fetch("/api/auth/sign-out").then((res) => res.json());
+    router.push(data);
   };
 
   return (

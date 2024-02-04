@@ -7,62 +7,73 @@ import CardProgress from "@/components/CardProgress";
 import { EpicContainer, PhaseContainer } from "./styles";
 import ProgressBar from "@/components/ProgressBar";
 import { cryptography } from "@/utils/cryptography";
-import { findPhasesByProjectId } from "@/actions/phases";
-import { findEpicsByFaseIdAndProjectId } from "@/actions/epic";
+import { cookies } from "next/headers";
 
 interface ControlCenterProps {
   params: { projectUuid: string };
 }
 
 export default async function ControlCenter({ params }: ControlCenterProps) {
-  const responsePhases = await findPhasesByProjectId(params.projectUuid);
-  let allEpics;
+  const data = await fetch(process.env.NEXT_PUBLIC_NEXT_BASE_URL+`/api/control-center?id=${params.projectUuid}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${cookies().get("access_token")?.value}`
+    },
+  })
+  .then((res) => res.json());
+  console.log(1, data)
 
-  if (responsePhases && Array.isArray(responsePhases)) {
-    const epicPromises = responsePhases.map(async (phase) => {
-      const epics = await findEpicsByFaseIdAndProjectId(
-        phase.phaseId,
-        params.projectUuid
-      );
-      return epics;
-    });
+  const responsePhases = data.phases;
+  const allEpics = data.epics;
+  // const responsePhases = await findPhasesByProjectId(params.projectUuid);
+  // let allEpics;
 
-    const allEpicsNested = await Promise.all(epicPromises);
-    allEpics = allEpicsNested.flat();
-  }
+  // if (responsePhases && Array.isArray(responsePhases)) {
+  //   const epicPromises = responsePhases.map(async (phase) => {
+  //     const epics = await findEpicsByFaseIdAndProjectId(
+  //       phase.phaseId,
+  //       params.projectUuid
+  //     );
+  //     return epics;
+  //   });
+
+  //   const allEpicsNested = await Promise.all(epicPromises);
+  //   allEpics = allEpicsNested.flat();
+  // }
 
   const getNamePhases = (id: number) => {
-    const phase = responsePhases?.find((phase) => phase.phaseId === id);
+    const phase = responsePhases?.find((phase: any) => phase.phaseId === id);
 
     return phase ? phase.title : "prepare";
   };
 
-  const renderProgressBarGroup = (epics: any) => {
-    return epics.reduce((acc: any, epic: any, index: any) => {
-      const progressBar = (
-        <ProgressBar
-          key={index}
-          step={epic.step}
-          name={epic.name}
-          phase={getNamePhases(epic.phaseId)}
-          plannedDate={epic.plannedDate}
-          completeWork={epic.completeWork}
-          totalWork={epic.totalWork}
-          percentComplete={epic.percentComplete}
-        />
-      );
+  // const renderProgressBarGroup = (epics: any) => {
+  //   return epics.reduce((acc: any, epic: any, index: any) => {
+  //     const progressBar = (
+  //       <ProgressBar
+  //         key={index}
+  //         step={epic.step}
+  //         name={epic.name}
+  //         phase={getNamePhases(epic.phaseId)}
+  //         plannedDate={epic.plannedDate}
+  //         completeWork={epic.completeWork}
+  //         totalWork={epic.totalWork}
+  //         percentComplete={epic.percentComplete}
+  //       />
+  //     );
 
-      if (index % 3 === 0) {
-        acc.push([progressBar]);
-      } else {
-        acc[acc.length - 1].push(progressBar);
-      }
+  //     if (index % 3 === 0) {
+  //       acc.push([progressBar]);
+  //     } else {
+  //       acc[acc.length - 1].push(progressBar);
+  //     }
 
-      return acc;
-    }, []);
-  };
+  //     return acc;
+  //   }, []);
+  // };
 
-  const progressBarGroups = renderProgressBarGroup(allEpics);
+  // const progressBarGroups = renderProgressBarGroup(allEpics);
 
   return (
     <>
@@ -79,7 +90,7 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
       <Wrapper title="PHASES">
         <PhaseContainer>
           {responsePhases &&
-            responsePhases.map((phase) => (
+            responsePhases.map((phase: any) => (
               <CardProgress
                 link={cryptography.encript({ project: params.projectUuid, phaseId: phase.phaseId, phaseName: phase.name })}
                 completeWork={phase.completeWork}
@@ -94,11 +105,11 @@ export default async function ControlCenter({ params }: ControlCenterProps) {
 
       <Wrapper title="EPICS">
         <EpicContainer>
-          {progressBarGroups.map((group: any, index: any) => (
+          {/* {progressBarGroups.map((group: any, index: any) => (
             <div className="epic-column" key={index}>
               {group}
             </div>
-          ))}
+          ))} */}
         </EpicContainer>
       </Wrapper>
     </>

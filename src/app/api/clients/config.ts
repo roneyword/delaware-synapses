@@ -1,8 +1,8 @@
 import { StorageKeysProps } from "./types";
 
 export const storageKeys: StorageKeysProps = {
-  accessToken: "synapses@accessToken",
-  microsoftCode: "synapses@authCode",
+  accessToken: "access_token",
+  microsoftCode: "auth_code",
 }
 
 export const httpMethods = {

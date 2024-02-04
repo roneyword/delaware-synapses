@@ -1,25 +1,29 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { onGenerateAccessTokenByCode } from "@/actions/auth";
+import { useEffect } from "react";
 
 export default function App() {
   const router = useRouter();
-  const params = useSearchParams();
+  const searchParams = useSearchParams();
+  const code = searchParams.get("code");
 
-  const onLoad = async () => {
-    const code = params.get("code");
-    if (code) {
-      onGenerateAccessTokenByCode(code).then(() => {
-        router.push(`/home`);
-      });
-    };
+  const handleLogin = async () => {
+    const { data } = await fetch(`/api/auth/sign-in`, {
+      method: "POST",
+      body: JSON.stringify({code})
+    }).then((res) => res.json());
 
-    router.push(`/login`);
+    if (data?.accessToken) {
+      router.push("/home");
+    }
   };
 
-  useEffect(() => {
-    (async() => await onLoad())();
-  }, [router]);
+  useEffect (() => {
+    if (code) {
+      handleLogin();
+    }
+
+    router.push(`/login`);
+  }, [code]);
 }

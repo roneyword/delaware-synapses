@@ -1,10 +1,9 @@
-"use server";
-
-import { cookies } from 'next/headers'
-import { storageKeys } from "./clients/config";
+import { cookies } from "next/headers";
+import { storageKeys } from "../../clients/config";
+import { type NextRequest, NextResponse } from "next/server";
 
 // AUTH LOGIN
-export const onMicrosoftSignIn = async () => {
+export async function GET(): Promise<Response> {
   const clientId = process.env.CLIENT_ID;
   const tenantId = process.env.TENANT_ID;
   const response_type = process.env.RESPONSE_TYPE;
@@ -13,29 +12,21 @@ export const onMicrosoftSignIn = async () => {
   const state = process.env.STATE;
   const code_challenge_method = process.env.CODE_CHALLENGE_METHOD;
   const code_challenge = process.env.CODE_CHALLENGE;
-  const baseURL = process.env.NEXT_BASE_URL;
+  const baseURL = process.env.NEXT_PUBLIC_NEXT_BASE_URL;
 
-  return `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/authorize?client_id=${clientId}&response_type=${response_type}&redirect_uri=${baseURL}&response_mode=${response_mode}&scope=${scope}&state=${state}&code_challenge_method=${code_challenge_method}&code_challenge=${code_challenge}`;
-};
-
-// AUTH LOGOUT
-export const onMicrosoftLogout = async () => {
-  const clientId = process.env.CLIENT_ID;
-  const tenantId = process.env.TENANT_ID;
-  const baseURL = process.env.NEXT_BASE_URL!;
-
-  cookies().delete(storageKeys.accessToken);
-
-  return `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/logout?client_id=${clientId}&post_logout_redirect_uri=${baseURL}`;
+  return Response.json({
+    data: `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/authorize?client_id=${clientId}&response_type=${response_type}&redirect_uri=${baseURL}&response_mode=${response_mode}&scope=${scope}&state=${state}&code_challenge_method=${code_challenge_method}&code_challenge=${code_challenge}`
+  })
 };
 
 // AUTH GET TOKEN
-export const onGenerateAccessTokenByCode = async (code: string): Promise<boolean | undefined> => {
+export async function POST(req: NextRequest) {
+  const { code } = await req.json();
   const tenantId = process.env.TENANT_ID;
   const clientId = process.env.CLIENT_ID;
   const scope = process.env.SCOPE;
   const codeVerifier = process.env.CODE_CHALLENGE;
-  const redirect_uri = process.env.NEXT_BASE_URL!;
+  const redirect_uri = process.env.NEXT_PUBLIC_NEXT_BASE_URL!;
 
   const tokenEndpoint = `https://login.microsoftonline.com/${tenantId}/oauth2/v2.0/token`;
 
@@ -66,10 +57,10 @@ export const onGenerateAccessTokenByCode = async (code: string): Promise<boolean
       accessToken = data.access_token;
 
       cookies().set(storageKeys.accessToken, accessToken!);
-    } else {
-      throw new Error(response.statusText);
+      return NextResponse.json({ data: {accessToken} });
     }
-    return !!accessToken;
+
+    return NextResponse.json({ statusCode: 401, message: 'Unauthorized' });
   } catch (error: any) {
     console.error('Error exchanging code for token:', error);
   }

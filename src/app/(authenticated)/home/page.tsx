@@ -3,17 +3,39 @@ import { HomeProjectsContainer } from "./styles";
 import ErrorPage from "@/components/PageError";
 import Wrapper from "@/components/Wrapper";
 import Card from "@/components/Card";
-import { ClientProps, getProjects } from "@/actions/projects";
+import { cookies } from "next/headers";
+
+type ProjectProps = {
+  projectId: number;
+  projectUuid: string;
+  name: string
+  isActive: boolean;
+}
+
+type ClientProps = {
+  clientId: number;
+  clientUuid: string;
+  isActive: boolean;
+  name: string;
+  projectList: ProjectProps[];
+}
 
 export default async function Home() {
-  const responseProjects = await getProjects();
+  const data = await fetch(process.env.NEXT_PUBLIC_NEXT_BASE_URL+"/api/home", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${cookies().get("access_token")?.value}`
+    },
+  })
+  .then((res) => res.json());
 
   return (
     <>
       <Header />
       <Wrapper>
-        {responseProjects && Array.isArray(responseProjects) ? (
-          responseProjects.map((project: ClientProps) => (
+        {data && Array.isArray(data) ? (
+          data.map((project: ClientProps) => (
             <HomeProjectsContainer key={project.clientId}>
               <h2 className="home-projects-title">{project.name}</h2>
               <div className="home-projects-grid">

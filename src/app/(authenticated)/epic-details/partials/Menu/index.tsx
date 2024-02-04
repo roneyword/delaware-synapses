@@ -10,7 +10,7 @@ import ProgressBar from "@/components/ProgressBar";
 import { cryptography } from "@/utils/cryptography";
 import CardProgress from "@/components/CardProgress";
 import { useEffect, useState } from "react";
-import { findPhasesByProjectId } from "@/actions/phases";
+import { findPhasesByProjectId } from "@/app/api/control-center/route";
 
 interface MenuProps {
   token: string,
@@ -18,7 +18,7 @@ interface MenuProps {
   epics: any
 }
 
-export default async function Menu({ token, phases, epics }: MenuProps) {
+export default function Menu({ token, phases, epics }: MenuProps) {
   const decript = JSON.parse(cryptography.decript(token));
   const [phaseName, setPhaseName] = useState<string>(decript.phaseName);
 
